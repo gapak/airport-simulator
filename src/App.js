@@ -16,6 +16,7 @@ import GinGameMenu from './bdcgin/GinGameMenu';
 import GinFooter from './bdcgin/GinFooter';
 import Helpers from "./game/Helpers";
 
+import {isEnough, chargeCost} from './bdcgin/Gin';
 import {constructions} from './gamedata/constructions';
 
 
@@ -24,24 +25,10 @@ class App extends Component {
         super(props);
 
         this.gin = new Gin(game_name, getDefaultState);
-        this.helpers = new Helpers(this.gin);
-
-        this.gin.init();
-        this.gin.registerRules(rules);
-
-        this.state = this.gin.store;
-
-        /*
-        this.gin.addViewHandler(state => {
-            console.log("set state " + state.tick);
-            this.setState(state);
-        });
-        */
+        //this.gin.addViewHandler(state => { console.log(state, this, this.setState); this.setState(state); });
         this.gin.connectReact(this);
-
-        this.state.initDone = false;
-
-        this.gin.params["helpers"] = this.helpers;
+        this.gin.registerRules(rules);
+        this.state = getDefaultState();
     }
 
     componentDidMount() {
@@ -49,24 +36,49 @@ class App extends Component {
         this.gin.playGame();
     }
 
+
     render() {
         const state = this.state;
+
+        const GinButton = (props) => {
+            let item = props.item;
+            //console.log(item);
+            return (item.isLocked && item.isLocked(this.state))
+                ? ''
+                :
+                <button style={{padding: '4px 4px'}}
+                        className={(item.isDisabled && item.isDisabled(this.state)) ? 'disabled' : (item.cost ? isEnough(this.state, item.cost) ? '' : 'disabled' : '')}
+                        onClick={() => { this.gin.onClick(item); }}>
+                    {item.name}
+                </button>
+        };
+
+        const BuyGinButton = (props) => <GinButton item={{
+            name: "$ " + props.item.cost.money,
+            cost: props.item.cost,
+            isDisabled: (state) => props.item.isDisabled(state),
+            onClick: (state) => props.item.onClick(state) }} />;
+
 
         let constructionBox = (item, key) =>
             <div key={item.key} className={item.key + " box smallBorders"}>
                 <div>
                     <div className="box stretch">
                         <div> { item.name } :
-                            <button className="btn btn-info fat">$ { item.price }</button>
+                            <BuyGinButton item={item}/>
                         </div>
-                        <div className="flex-container-column">{ item.bandwidth } X 4 = 80</div>
-                        <div className="flex-container-column">Load: 40/80</div>
+                        <div className="flex-container-column">{ item.bandwidth } X { state.constructions[item.key] } = {item.bandwidth * state.constructions[item.key]}</div>
+                        <div className="flex-container-column">Load: 42/{ item.bandwidth * state.constructions[item.key] }</div>
                     </div>
                 </div>
             </div>;
 
         return (
             <div className="App">
+                <div>
+                    <div>Money: ${state.money}</div>
+                    <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
+                </div>
                 <div id="container">
                     <div className="flex-container-column boldBorders">
                         <div className="box"></div>
