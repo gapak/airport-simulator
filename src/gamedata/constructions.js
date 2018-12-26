@@ -157,6 +157,16 @@ export const constructions = {
         description: 'Passengers can have some rest here during a long transfer'
     },
 
+    luggageLine: {
+        key: 'luggageLine',
+        isDisabled: (state, params = {}) => false,
+        onClick: (state, params = {}) => buy(state, 'luggageLine'),
+        name: 'Luggage Line',
+        cost: {money: 800},
+        bandwidth: 20,
+        description: 'Passengers will take their luggage here'
+    },
+
     hall: {
         key: 'hall',
         isDisabled: (state, params = {}) => false,
@@ -205,5 +215,5 @@ export const constructions = {
         cost: {money: 800},
         bandwidth: 20,
         description: 'People are coming here from a city.'
-    }
+    },
 };
