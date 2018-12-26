@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import './css/App.css';
 import './css/conponents.css';
 import './css/tooltip.css';
-import './css/footer.css';
+import './bdcgin/css/footer.css';
 
 import {game_name, social_links, support} from './game/core/app_config';
 import {getDefaultState} from './game/core/default_state';
@@ -39,15 +39,16 @@ class App extends Component {
 
     render() {
         const state = this.state;
-
         const GinButton = (props) => {
             let item = props.item;
-            //console.log(item);
             return (item.isLocked && item.isLocked(this.state))
                 ? ''
                 :
                 <button
-                        className={(item.isDisabled && item.isDisabled(this.state)) ? 'disabled' : (item.cost ? isEnough(this.state, item.cost) ? '' : 'disabled' : '')}
+                        className={
+                            (item.isDisabled && item.isDisabled(this.state)) ? 'disabled' :
+                                (item.cost ? isEnough(this.state, item.cost) ? '' : 'disabled' : '')
+                        }
                         onClick={() => { this.gin.onClick(item); }}>
                     {item.name}
                 </button>
@@ -57,7 +58,8 @@ class App extends Component {
             name: "$ " + props.item.cost.money,
             cost: props.item.cost,
             isDisabled: (state) => props.item.isDisabled(state),
-            onClick: (state) => props.item.onClick(state) }} />;
+            onClick: (state) => props.item.onClick(state)
+        }} />;
 
 
         let constructionBox = (item, key) =>
@@ -66,8 +68,12 @@ class App extends Component {
                     <div> { item.name } :
                         <BuyGinButton item={item}/>
                     </div>
-                    <div className="flex-container-column">{ item.bandwidth } X { state.constructions[item.key] } = {item.bandwidth * state.constructions[item.key]}</div>
-                    <div className="flex-container-column">Load: 42/{ item.bandwidth * state.constructions[item.key] }</div>
+                    <div className="flex-container-column">
+                        { item.bandwidth } X { state.constructions[item.key] } = {item.bandwidth * state.constructions[item.key]}
+                    </div>
+                    <div className="flex-container-column">
+                        Load: 42/ { item.bandwidth * state.constructions[item.key] }
+                    </div>
                 </div>
             </div>;
 
