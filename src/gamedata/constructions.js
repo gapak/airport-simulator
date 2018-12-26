@@ -1,6 +1,3 @@
-
-
-
 const buy = (state, item_key) => {
     console.log('buy', item_key);
     state.constructions[item_key]++;
