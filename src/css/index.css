@@ -17,6 +17,7 @@ html, body {
 .wide {
     display: flex;
     flex-direction: column;
+    padding: 3px;
     width: 200%;
 }
 
@@ -27,6 +28,7 @@ html, body {
 .splitOnTwoSides {
     display: flex;
     margin: 1px;
+    padding: 3px;
     height: 100%;
 }
 
@@ -37,13 +39,15 @@ html, body {
 .box {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     justify-content: space-around;
-    align-content: center;
-    align-items: stretch;
     text-align: center;
     margin: 1px;
     height: 100%;
+    padding: 3px;
+}
+
+.disabled {
+    color: #BCC5D6;
 }
 
 .stretch {
@@ -51,8 +55,13 @@ html, body {
     align-content: space-between;
 }
 
+.center {
+    display: flex;
+    justify-content: center;
+}
+
 .boldBorders {
-    border: 5px solid black;
+    border: 2px solid black;
 }
 
 .smallBorders {

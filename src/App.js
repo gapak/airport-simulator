@@ -46,7 +46,7 @@ class App extends Component {
             return (item.isLocked && item.isLocked(this.state))
                 ? ''
                 :
-                <button style={{padding: '4px 4px'}}
+                <button
                         className={(item.isDisabled && item.isDisabled(this.state)) ? 'disabled' : (item.cost ? isEnough(this.state, item.cost) ? '' : 'disabled' : '')}
                         onClick={() => { this.gin.onClick(item); }}>
                     {item.name}
@@ -62,26 +62,24 @@ class App extends Component {
 
         let constructionBox = (item, key) =>
             <div key={item.key} className={item.key + " box smallBorders"}>
-                <div>
-                    <div className="box stretch">
-                        <div> { item.name } :
-                            <BuyGinButton item={item}/>
-                        </div>
-                        <div className="flex-container-column">{ item.bandwidth } X { state.constructions[item.key] } = {item.bandwidth * state.constructions[item.key]}</div>
-                        <div className="flex-container-column">Load: 42/{ item.bandwidth * state.constructions[item.key] }</div>
+                <div className="box">
+                    <div> { item.name } :
+                        <BuyGinButton item={item}/>
                     </div>
+                    <div className="flex-container-column">{ item.bandwidth } X { state.constructions[item.key] } = {item.bandwidth * state.constructions[item.key]}</div>
+                    <div className="flex-container-column">Load: 42/{ item.bandwidth * state.constructions[item.key] }</div>
                 </div>
             </div>;
 
         return (
             <div className="App">
-                <div>
-                    <div>Money: ${state.money}</div>
-                    <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
-                </div>
                 <div id="container">
-                    <div className="flex-container-column boldBorders">
-                        <div className="box"></div>
+                    <div className="flex-container-column">
+                        <div className="box">
+                            <div> Game speed:
+                                <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
+                            </div>
+                        </div>
 
                         {constructionBox(constructions.innerLuggageCart)}
                         {constructionBox(constructions.dutyFree)}
@@ -92,7 +90,7 @@ class App extends Component {
                         <div className="box"></div>
                     </div>
 
-                    <div className="wide boldBorders">
+                    <div className="wide fat">
                         <div className="box">
                             {constructionBox(constructions.runway)}
                         </div>
@@ -117,8 +115,10 @@ class App extends Component {
                         </div>
                     </div>
 
-                    <div className="flex-container-column boldBorders">
-                        <div className="box"></div>
+                    <div className="flex-container-column">
+                        <div className="box">
+                            <div>Money: ${state.money}</div>
+                        </div>
 
                         {constructionBox(constructions.outLuggageCart)}
                         {constructionBox(constructions.dutyFree)}
@@ -129,7 +129,9 @@ class App extends Component {
                         <div className="box"></div>
                     </div>
                 </div>
+
                 <GinFooter state={state} gin={this.gin} social_links={social_links} support={support}/>
+
             </div>
         );
     }
