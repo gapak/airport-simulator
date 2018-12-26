@@ -46,6 +46,10 @@ html, body {
     padding: 3px;
 }
 
+.background {
+    background-color: floralwhite;
+}
+
 .disabled {
     color: #BCC5D6;
 }

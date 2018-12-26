@@ -63,7 +63,7 @@ class App extends Component {
 
 
         let constructionBox = (item, key) =>
-            <div key={item.key} className={item.key + " box smallBorders"}>
+            <div key={item.key} className={item.key + " box smallBorders background"}>
                 <div className="box">
                     <div> { item.name } :
                         <BuyGinButton item={item}/>
@@ -127,9 +127,9 @@ class App extends Component {
                         </div>
 
                         {constructionBox(constructions.outLuggageCart)}
-                        {constructionBox(constructions.dutyFree)}
                         {constructionBox(constructions.outEscalator)}
                         {constructionBox(constructions.outFastRoad)}
+                        {constructionBox(constructions.luggageLine)}
                         {constructionBox(constructions.hotel)}
 
                         <div className="box"></div>
