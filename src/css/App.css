@@ -8,6 +8,7 @@
 .App {
     display: flex;
     flex-direction: column;
+    background: url('/background.jpg') no-repeat center top #0b0b1b;
     height: 100%;
 }
 

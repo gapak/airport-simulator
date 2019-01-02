@@ -47,7 +47,7 @@ html, body {
 }
 
 .background {
-    background-color: floralwhite;
+    background-color: rgba(255, 250, 240, 0.6);
 }
 
 .disabled {
