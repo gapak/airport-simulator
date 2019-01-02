@@ -28,6 +28,35 @@ const default_state = {
         parking: 1
     },
 
+    vehicles_passengers: {
+        aircraft: [],
+        train: [],
+        taxi: [],
+    },
+
+    passengers: {
+        innerLuggageCart: [],
+        outLuggageCart: [],
+        innerEscalator: [],
+        outEscalator: [],
+        innerFastRoad: [],
+        outFastRoad: [],
+        dutyFree: [],
+        innerBus: [],
+        outBus: [],
+        innerPassport: [],
+        outPassport: [],
+        innerSecurity: [],
+        outSecurity: [],
+        checkIn: [],
+        hotel: [],
+        hall: [],
+        runway: [],
+        cafe: [],
+        rail: [],
+        parking: []
+    },
+
     game_speed: 1000,
     frame_rate: 1,
     game_speed_multiplier: 1,
