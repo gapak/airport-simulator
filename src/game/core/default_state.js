@@ -21,6 +21,7 @@ const default_state = {
         outSecurity: 1,
         checkIn: 1,
         hotel: 1,
+        luggageLine: 1,
         hall: 1,
         runway: 1,
         cafe: 1,
@@ -28,13 +29,7 @@ const default_state = {
         parking: 1
     },
 
-    vehicles_passengers: {
-        aircraft: [],
-        train: [],
-        taxi: [],
-    },
-
-    passengers: {
+    queue: {
         innerLuggageCart: [],
         outLuggageCart: [],
         innerEscalator: [],
@@ -50,11 +45,42 @@ const default_state = {
         outSecurity: [],
         checkIn: [],
         hotel: [],
+        luggageLine: [],
         hall: [],
         runway: [],
         cafe: [],
         rail: [],
         parking: []
+    },
+
+    processing: {
+        innerLuggageCart: [],
+        outLuggageCart: [],
+        innerEscalator: [],
+        outEscalator: [],
+        innerFastRoad: [],
+        outFastRoad: [],
+        dutyFree: [],
+        innerBus: [],
+        outBus: [],
+        innerPassport: [],
+        outPassport: [],
+        innerSecurity: [],
+        outSecurity: [],
+        checkIn: [],
+        hotel: [],
+        luggageLine: [],
+        hall: [],
+        runway: [],
+        cafe: [],
+        rail: [],
+        parking: []
+    },
+
+    vehicles_passengers: {
+        aircraft: [],
+        train: [],
+        taxi: [],
     },
 
     game_speed: 1000,
