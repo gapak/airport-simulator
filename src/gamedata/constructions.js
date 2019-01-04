@@ -1,9 +1,10 @@
+import _ from 'lodash';
+
 const buy = (state, item_key) => {
     console.log('buy', item_key);
     state.constructions[item_key]++;
     return state;
 };
-
 
 export var constructions = {};
 
@@ -20,7 +21,7 @@ constructions = {
         cost:        {money: 1620},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'These cars drive luggage from the airport to a plane.'
     },
 
@@ -36,7 +37,7 @@ constructions = {
         cost:        {money: 1620},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'These cars drive luggage from a plane to the airport.'
     },
 
@@ -52,7 +53,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Transports people between floors.'
     },
 
@@ -68,7 +69,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Transports people between floors.'
     },
 
@@ -84,7 +85,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Allows people to move faster between gates.'
     },
 
@@ -100,7 +101,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Allows people to move faster between gates.'
     },
 
@@ -117,7 +118,7 @@ constructions = {
         cost:        {money: 3000},
         bandwidth:   50,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Passengers can buy some gifts here while their flight is late.'
     },
 
@@ -133,7 +134,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Transports people from airport to a plane.'
     },
 
@@ -149,7 +150,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Transports people from plane to the airport.'
     },
 
@@ -165,7 +166,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Checks that passengers have valid documents to cross over the country.'
     },
 
@@ -181,7 +182,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Checks that passengers have valid documents to get into the country.'
     },
 
@@ -197,7 +198,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Provides security check of passengers and their carryon.'
     },
 
@@ -213,7 +214,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Provides security check of passengers and their carryon.'
     },
 
@@ -229,7 +230,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Allow passengers to register on a flight offline.'
     },
 
@@ -245,7 +246,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Passengers can have some rest here during a long transfer'
     },
 
@@ -261,7 +262,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Passengers will take their luggage here'
     },
 
@@ -277,7 +278,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Common place for passengers to wait for their flight. Make sure it has enough benches.'
     },
 
@@ -286,14 +287,17 @@ constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'runway'),
         onTick:      (state, params = {}) => {
-            // some code
+            if (state.passengers.runway <= 0) {
+                state.passengers.runway = _.random(10, constructions.runway.bandwidth)
+                return state;
+            }
             return state;
         },
         name:        'Runway',
         cost:        {money: 800},
-        bandwidth:   20,
+        bandwidth:   200,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'The main airport construction. The more runways you have the more flights you can accept.'
     },
 
@@ -309,7 +313,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'Passengers can drink here until they stop worry about their flight'
     },
 
@@ -325,7 +329,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'This rail transports passengers from a city to the airport.'
     },
 
@@ -341,7 +345,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        timeGap: 5,
         description: 'People are coming here from a city.'
     },
 };
