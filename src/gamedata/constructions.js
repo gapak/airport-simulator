@@ -1,3 +1,6 @@
+
+import _ from 'lodash';
+
 const buy = (state, item_key) => {
     console.log('buy', item_key);
     state.constructions[item_key]++;
@@ -20,7 +23,7 @@ constructions = {
         cost:        {money: 1620},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'These cars drive luggage from the airport to a plane.'
     },
 
@@ -36,7 +39,7 @@ constructions = {
         cost:        {money: 1620},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'These cars drive luggage from a plane to the airport.'
     },
 
@@ -52,7 +55,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Transports people between floors.'
     },
 
@@ -68,7 +71,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Transports people between floors.'
     },
 
@@ -84,7 +87,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Allows people to move faster between gates.'
     },
 
@@ -100,7 +103,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Allows people to move faster between gates.'
     },
 
@@ -117,7 +120,7 @@ constructions = {
         cost:        {money: 3000},
         bandwidth:   50,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Passengers can buy some gifts here while their flight is late.'
     },
 
@@ -127,13 +130,14 @@ constructions = {
         onClick:     (state, params = {}) => buy(state, 'innerBus'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'innerBus', next: 'innerPassport'});
             return state;
         },
         name:        'Bus',
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Transports people from airport to a plane.'
     },
 
@@ -149,7 +153,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Transports people from plane to the airport.'
     },
 
@@ -159,13 +163,14 @@ constructions = {
         onClick:     (state, params = {}) => buy(state, 'innerPassport'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'innerPassport', next: 'innerSecurity'});
             return state;
         },
         name:        'Passport Control',
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Checks that passengers have valid documents to cross over the country.'
     },
 
@@ -181,7 +186,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Checks that passengers have valid documents to get into the country.'
     },
 
@@ -191,13 +196,14 @@ constructions = {
         onClick:     (state, params = {}) => buy(state, 'innerSecurity'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'innerSecurity', next: 'hall'});
             return state;
         },
         name:        'Security',
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Provides security check of passengers and their carryon.'
     },
 
@@ -213,7 +219,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Provides security check of passengers and their carryon.'
     },
 
@@ -229,7 +235,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Allow passengers to register on a flight offline.'
     },
 
@@ -245,7 +251,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Passengers can have some rest here during a long transfer'
     },
 
@@ -261,7 +267,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Passengers will take their luggage here'
     },
 
@@ -277,7 +283,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Common place for passengers to wait for their flight. Make sure it has enough benches.'
     },
 
@@ -287,13 +293,14 @@ constructions = {
         onClick:     (state, params = {}) => buy(state, 'runway'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'runway', next: 'innerBus'});
             return state;
         },
         name:        'Runway',
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'The main airport construction. The more runways you have the more flights you can accept.'
     },
 
@@ -309,7 +316,7 @@ constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'Passengers can drink here until they stop worry about their flight'
     },
 
@@ -318,14 +325,16 @@ constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'rail'),
         onTick:      (state, params = {}) => {
-            // some code
+            // generate dirty departure passengers, pick clean arrival passengers
+            // move dirty departure passengers to hall
+            state = move(state, {from: 'rail', next: 'hall'});
             return state;
         },
         name:        'Rail',
         cost:        {money: 800},
-        bandwidth:   20,
+        bandwidth:   50,
         threshold:   20,
-        length: 5,
+        processing_time: 12,
         description: 'This rail transports passengers from a city to the airport.'
     },
 
@@ -334,14 +343,52 @@ constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'parking'),
         onTick:      (state, params = {}) => {
-            // some code
+            // generate dirty departure passengers, pick clean arrival passengers
+            // move dirty departure passengers to hall
+            state = move(state, {from: 'parking', next: 'hall'});
             return state;
         },
         name:        'Parking',
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        length: 5,
+        processing_time: 5,
         description: 'People are coming here from a city.'
     },
+};
+
+const move = (state, params = {from: '', next: ''}) => {
+    //console.log(state);
+    //console.log(params);
+    //console.log(state.queue[params.from]);
+    //console.log(state.processing[params.from]);
+
+    // 1 from processing to next
+    let ready = _.remove(state.processing[params.from], passenger => passenger.busy_till < state.tick);
+
+    //console.log(ready.length);
+    //console.log(ready);
+
+    if (ready.length > 0) {
+        state.queue[params.next] = _.concat(state.queue[params.next], ready);
+        //console.log(state.queue[params.next]);
+    }
+
+    // 2 params.from queue to processing
+    //console.log(state.processing[params.from].length);
+    //console.log(constructions[params.from].bandwidth);
+    //console.log(state.constructions[params.from]);
+    if (state.processing[params.from].length < constructions[params.from].bandwidth * state.constructions[params.from]) {
+        if (state.queue[params.from].length > 0) {
+            let count = Math.min(constructions[params.from].bandwidth * state.constructions[params.from] - state.processing[params.from].length, state.queue[params.from].length);
+            console.log(count);
+            console.log(constructions[params.from].bandwidth * state.constructions[params.from] - state.processing[params.from].length, state.queue[params.from].length);
+            let to_processing = _.drop(state.queue[params.from], count);
+            _.each(to_processing, passenger => { passenger.busy_till = state.tick + constructions[params.from].processing_time });
+            state.processing[params.from] = _.concat(state.processing[params.from], to_processing);
+            state.queue[params.from] = _.dropRight(state.queue[params.from], (state.queue[params.from].length - count));
+        }
+    }
+
+    return state;
 };

@@ -1,6 +1,5 @@
 
 import _ from 'lodash';
-import { constructions } from '../../gamedata/constructions.js';
 
 import { vehicles } from '../../gamedata/vehicles';
 import { constructions } from '../../gamedata/constructions';
