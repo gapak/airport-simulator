@@ -18,37 +18,37 @@ export const rules = {
     }},
 
     vehicles: {
-            onFrame: (store, params = {}) => {
-                _.each(vehicles, vehicle => {
-                    if (vehicle.onFrame)
-                        store = vehicle.onFrame(store, params);
-                });
-                return store;
-            },
-            onTick: (store, params = {}) => {
-                _.each(vehicles, vehicle => {
-                    if (vehicle.onTick)
-                        store = vehicle.onTick(store, params);
-                });
-                return store;
-            }
+        onFrame: (store, params = {}) => {
+            _.each(vehicles, vehicle => {
+                if (vehicle.onFrame)
+                    store = vehicle.onFrame(store, params);
+            });
+            return store;
+        },
+        onTick: (store, params = {}) => {
+            _.each(vehicles, vehicle => {
+                if (vehicle.onTick)
+                    store = vehicle.onTick(store, params);
+            });
+            return store;
+        }
      },
 
     constructions: {
-            onFrame: (store, params = {}) => {
-                _.each(constructions, construction => {
-                    if (construction.onFrame)
-                        store = construction.onFrame(store, params);
-                });
-                return store;
-            },
-            onTick: (store, params = {}) => {
-                _.each(constructions, construction => {
-                    if (construction.onTick)
-                        store = construction.onTick(store, params);
-                });
-                return store;
-            }
+        onFrame: (store, params = {}) => {
+            _.each(constructions, construction => {
+                if (construction.onFrame)
+                    store = construction.onFrame(store, params);
+            });
+            return store;
+        },
+        onTick: (store, params = {}) => {
+            _.each(constructions, construction => {
+                if (construction.onTick)
+                    store = construction.onTick(store, params);
+            });
+            return store;
+        }
     },
 };
 

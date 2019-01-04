@@ -7,7 +7,6 @@ const buy = (state, item_key) => {
     return state;
 };
 
-
 export var constructions = {};
 
 constructions = {
@@ -298,7 +297,7 @@ constructions = {
         },
         name:        'Runway',
         cost:        {money: 800},
-        bandwidth:   20,
+        bandwidth:   200,
         threshold:   20,
         processing_time: 5,
         description: 'The main airport construction. The more runways you have the more flights you can accept.'
