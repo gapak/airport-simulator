@@ -87,6 +87,9 @@ class App extends Component {
                 <div id="container">
                     <div className="flex-container-column">
                         <div className="box">
+                            <div>
+                                Tick: {state.tick} Frame: {state.frame}
+                            </div>
                             <div> Game speed:
                                 <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
                             </div>
