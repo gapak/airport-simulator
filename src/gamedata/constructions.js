@@ -7,9 +7,54 @@ const buy = (state, item_key) => {
     return state;
 };
 
-export var constructions = {};
+const move = (state, direction = {from: '', to: ''}) => {
+    let processedPassengers = _.remove(
+        state.processing[direction.from],
+        passenger => passenger.busy_till < state.tick
+    );
 
-constructions = {
+    // If passengers are already processed
+    // they are going to queue to the next construction
+    if (processedPassengers.length > 0) {
+        state.queue[direction.to] = _.concat(state.queue[direction.to], processedPassengers);
+    }
+
+    // number of the construction multiplied on the construction bandwidth
+    let totalBandwidth = constructions[direction.from].bandwidth * state.constructions[direction.from];
+    // passengers that now in the construction
+    let numberOfProcessingPassengers = state.processing[direction.from].length;
+    // passengers that are waiting for getting into the next construction
+    let numberOfPassengersInQueue = state.queue[direction.from].length;
+    
+    if (numberOfProcessingPassengers < totalBandwidth) {
+        if (numberOfPassengersInQueue > 0) {
+            let vacantPlaces = totalBandwidth - numberOfProcessingPassengers;
+
+            // If there are more vacant places than passengers in the queue
+            // Then move all the queue
+            let numberOfPassengersToMove = Math.min(vacantPlaces, numberOfPassengersInQueue);
+            let passengersToProcessing = _.drop(state.queue[direction.from], numberOfPassengersToMove);
+
+            // Every passenger gets a time-marker: till when they will be processing
+            // from now + @processing_time of the construction
+            _.each(passengersToProcessing, passenger => {
+                passenger.busy_till = state.tick + constructions[direction.from].processing_time
+            });
+
+            // Add passengers to processing
+            state.processing[direction.from] = _.concat(state.processing[direction.from], passengersToProcessing);
+            // Remove passengers from the queue
+            state.queue[direction.from] = _.dropRight(
+                state.queue[direction.from],
+                (numberOfPassengersInQueue - numberOfPassengersToMove)
+            );
+        }
+    }
+
+    return state;
+};
+
+export const constructions = {
     innerLuggageCart: {
         key:         'innerLuggageCart',
         isDisabled:  (state, params = {}) => false,
@@ -129,7 +174,7 @@ constructions = {
         onClick:     (state, params = {}) => buy(state, 'innerBus'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'innerBus', next: 'innerPassport'});
+            state = move(state, {from: 'innerBus', to: 'innerPassport'});
             return state;
         },
         name:        'Bus',
@@ -162,7 +207,7 @@ constructions = {
         onClick:     (state, params = {}) => buy(state, 'innerPassport'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'innerPassport', next: 'innerSecurity'});
+            state = move(state, {from: 'innerPassport', to: 'innerSecurity'});
             return state;
         },
         name:        'Passport Control',
@@ -196,7 +241,7 @@ constructions = {
         onClick:     (state, params = {}) => buy(state, 'innerSecurity'),
         onTick:      (state, params = {}) => {
             // to baggage line
-            state = move(state, {from: 'innerSecurity', next: 'luggageLine'});
+            state = move(state, {from: 'innerSecurity', to: 'luggageLine'});
             return state;
         },
         name:        'Security',
@@ -309,7 +354,7 @@ constructions = {
         onClick:     (state, params = {}) => buy(state, 'runway'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'runway', next: 'innerBus'});
+            state = move(state, {from: 'runway', to: 'innerBus'});
             return state;
         },
         name:        'Runway',
@@ -343,7 +388,7 @@ constructions = {
         onTick:      (state, params = {}) => {
             // generate dirty departure passengers, pick clean arrival passengers
             // move dirty departure passengers to hall
-            state = move(state, {from: 'rail', next: 'hall'});
+            state = move(state, {from: 'rail', to: 'hall'});
             return state;
         },
         name:        'Rail',
@@ -361,7 +406,7 @@ constructions = {
         onTick:      (state, params = {}) => {
             // generate dirty departure passengers, pick clean arrival passengers
             // move dirty departure passengers to hall
-            state = move(state, {from: 'parking', next: 'hall'});
+            state = move(state, {from: 'parking', to: 'hall'});
             return state;
         },
         name:        'Parking',
@@ -371,33 +416,4 @@ constructions = {
         processing_time: 5,
         description: 'People are coming here from a city.'
     },
-};
-
-const move = (state, params = {from: '', next: ''}, predicate = passenger => true) => {
-    //console.log(state);
-    //console.log(params);
-
-    // 1 from processing to next
-    let ready = _.remove(state.processing[params.from], passenger => passenger.busy_till < state.tick && predicate(passenger));
-    state.queue[params.next] = _.concat(state.queue[params.next], ready);
-
-    // 2 params.from queue to processing
-    if (state.processing[params.from].length < (constructions[params.from].bandwidth * state.constructions[params.from])) {
-        if (state.queue[params.from].length > 0) {
-            let count = Math.min(constructions[params.from].bandwidth * state.constructions[params.from] - state.processing[params.from].length, state.queue[params.from].length);
-            // console.log(count);
-            //console.log(constructions[params.from].bandwidth * state.constructions[params.from] - state.processing[params.from].length, state.queue[params.from].length);
-            let to_processing = _.take(state.queue[params.from], count);
-
-            if (count !== to_processing.length) console.log("Wrong count: count !== to_processing.length ", count, to_processing.length);
-
-            // console.log(params.from, state.queue[params.from], to_processing);
-
-            _.each(to_processing, passenger => { passenger.busy_till = state.tick + constructions[params.from].processing_time });
-            state.processing[params.from] = _.concat(state.processing[params.from], to_processing);
-            state.queue[params.from] = _.drop(state.queue[params.from], count);
-        }
-    }
-
-    return state;
 };
