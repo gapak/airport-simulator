@@ -5,9 +5,7 @@ const gen_passenger = (direction) => {
     return {dir: direction, dirty: true};
 };
 
-export var vehicles = {};
-
-vehicles = {
+export const vehicles = {
     aircraft: {
         key:         'aircraft',
         onTick:      (state, params = {}) => {
