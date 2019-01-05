@@ -55,7 +55,7 @@ class App extends Component {
         };
 
         const BuyGinButton = (props) => <GinButton item={{
-            name: "+1 $ " + props.item.cost.money,
+            name: "$ " + props.item.cost.money,
             cost: props.item.cost,
             isDisabled: (state) => props.item.isDisabled(state),
             onClick: (state) => props.item.onClick(state)
@@ -65,9 +65,9 @@ class App extends Component {
         let constructionBox = (item, key) =>
             <div key={item.key} className={item.key + " box smallBorders background"}>
                 <div className="box">
-                    <div> { item.name } level {state.constructions[item.key]} <BuyGinButton item={item}/>
+                    <div> { item.name }: <BuyGinButton item={item}/>
                     </div>
-                    <div className="flex-container-row">
+                    <div className="flex-container-column">
                         <div className="flex-element">
                             Queue: {state.queue[item.key].length}
                         </div>
@@ -84,7 +84,7 @@ class App extends Component {
                     <div className="flex-container-column">
                         <div className="box">
                             <div>
-                                Tick: {state.tick} Frame: {state.frame}
+                                Hour: {state.tick} Minutes: {state.frame}
                             </div>
                             <div> Game speed:
                                 <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
