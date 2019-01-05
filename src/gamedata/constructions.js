@@ -224,6 +224,7 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'outPassport'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'outSecurity', next: 'outPassport'});
             return state;
         },
         name:        'Passport Control',
@@ -239,8 +240,8 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'innerSecurity'),
         onTick:      (state, params = {}) => {
-            // some code
-            state = move(state, {from: 'innerSecurity', to: 'hall'});
+            // to baggage line
+            state = move(state, {from: 'innerSecurity', to: 'luggageLine'});
             return state;
         },
         name:        'Security',
@@ -256,7 +257,8 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'outSecurity'),
         onTick:      (state, params = {}) => {
-            // some code
+            // to passport
+            state = move(state, {from: 'outSecurity', next: 'outPassport'});
             return state;
         },
         name:        'Security',
@@ -272,7 +274,8 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'checkIn'),
         onTick:      (state, params = {}) => {
-            // some code
+            // to security
+            state = move(state, {from: 'checkIn', next: 'outSecurity'});
             return state;
         },
         name:        'Check-in',
@@ -295,7 +298,7 @@ export const constructions = {
         cost:        {money: 800},
         bandwidth:   20,
         threshold:   20,
-        processing_time: 5,
+        processing_time: 360,
         description: 'Passengers can have some rest here during a long transfer'
     },
 
@@ -305,11 +308,12 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'luggageLine'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'luggageLine', next: 'hall'});
             return state;
         },
         name:        'Luggage Line',
         cost:        {money: 800},
-        bandwidth:   20,
+        bandwidth:   6,
         threshold:   20,
         processing_time: 5,
         description: 'Passengers will take their luggage here'
@@ -320,7 +324,20 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'hall'),
         onTick:      (state, params = {}) => {
-            // some code
+            // all to cafe
+            state = move(state, {from: 'hall', next: 'cafe'}, passenger => _.random(1, 10) === 1);
+
+            // arrival to taxi and rail
+            state = move(state, {from: 'hall', next: 'parking'}, passenger => _.random(1, 4) === 1 && passenger.dir === 'arrival');
+            state = move(state, {from: 'hall', next: 'rail'}, passenger => passenger.dir === 'arrival');
+
+            // transfer to hotel and checkIn
+            state = move(state, {from: 'hall', next: 'hotel'}, passenger => _.random(1, 7) === 1 && passenger.dir === 'transfer');
+            state = move(state, {from: 'hall', next: 'checkIn'}, passenger => passenger.dir === 'transfer');
+
+            // departure to checkIn
+            state = move(state, {from: 'hall', next: 'checkIn'}, passenger => passenger.dir === 'departure');
+
             return state;
         },
         name:        'Hall',
@@ -342,9 +359,9 @@ export const constructions = {
         },
         name:        'Runway',
         cost:        {money: 800},
-        bandwidth:   200,
+        bandwidth:   100,
         threshold:   20,
-        processing_time: 5,
+        processing_time: 10,
         description: 'The main airport construction. The more runways you have the more flights you can accept.'
     },
 
@@ -358,9 +375,9 @@ export const constructions = {
         },
         name:        'Cafe',
         cost:        {money: 800},
-        bandwidth:   20,
+        bandwidth:   10,
         threshold:   20,
-        processing_time: 5,
+        processing_time: 10,
         description: 'Passengers can drink here until they stop worry about their flight'
     },
 
@@ -377,7 +394,7 @@ export const constructions = {
         name:        'Rail',
         cost:        {money: 800},
         bandwidth:   50,
-        threshold:   20,
+        threshold:   10,
         processing_time: 12,
         description: 'This rail transports passengers from a city to the airport.'
     },
@@ -395,7 +412,7 @@ export const constructions = {
         name:        'Parking',
         cost:        {money: 800},
         bandwidth:   20,
-        threshold:   20,
+        threshold:   5,
         processing_time: 5,
         description: 'People are coming here from a city.'
     },

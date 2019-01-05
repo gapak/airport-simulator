@@ -55,7 +55,7 @@ class App extends Component {
         };
 
         const BuyGinButton = (props) => <GinButton item={{
-            name: "$ " + props.item.cost.money,
+            name: "+1 $ " + props.item.cost.money,
             cost: props.item.cost,
             isDisabled: (state) => props.item.isDisabled(state),
             onClick: (state) => props.item.onClick(state)
@@ -65,18 +65,14 @@ class App extends Component {
         let constructionBox = (item, key) =>
             <div key={item.key} className={item.key + " box smallBorders background"}>
                 <div className="box">
-                    <div> { item.name } :
-                        <BuyGinButton item={item}/>
-                    </div>
-                    <div className="flex-container-column">
-                        { item.bandwidth } X { state.constructions[item.key] } = {item.bandwidth * state.constructions[item.key]}
+                    <div> { item.name } level {state.constructions[item.key]} <BuyGinButton item={item}/>
                     </div>
                     <div className="flex-container-row">
                         <div className="flex-element">
                             Queue: {state.queue[item.key].length}
                         </div>
                         <div className="flex-element">
-                            Load: {state.processing[item.key].length} / { item.bandwidth * state.constructions[item.key] }
+                            Load: {state.processing[item.key].length} / { item.bandwidth * state.constructions[item.key] } ({ item.bandwidth } X { state.constructions[item.key] })
                         </div>
                     </div>
                 </div>
