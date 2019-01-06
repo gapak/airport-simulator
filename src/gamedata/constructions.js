@@ -86,6 +86,8 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'escalator'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'escalator', to: 'passport'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'escalator', to: 'bus'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Escalator',
@@ -102,6 +104,8 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'fastRoad'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'fastRoad', to: 'security'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'fastRoad', to: 'passport'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Fast Road',
@@ -118,6 +122,7 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'dutyFree'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'dutyFree', to: 'escalator'});
             return state;
         },
         name:        'Duty Free',
@@ -134,7 +139,8 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'bus'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'bus', to: 'passport'});
+            state = move(state, {from: 'bus', to: 'escalator'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'bus', to: 'runway'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Bus',
@@ -151,7 +157,8 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'passport'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'passport', to: 'security'});
+            state = move(state, {from: 'passport', to: 'fastRoad'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'passport', to: 'dutyFree'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Passport Control',
@@ -168,7 +175,8 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'security'),
         onTick:      (state, params = {}) => {
             // to baggage line
-            state = move(state, {from: 'security', to: 'luggageLine'});
+            state = move(state, {from: 'security', to: 'luggageLine'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'security', to: 'fastRoad'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Security',
@@ -218,7 +226,7 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'luggageLine'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'luggageLine', next: 'hall'});
+            state = move(state, {from: 'luggageLine', to: 'hall'}, passenger => passenger.dir === 'arrival');
             return state;
         },
         name:        'Luggage Line',
@@ -275,6 +283,8 @@ export const constructions = {
         description: 'The main airport construction. The more runways you have the more flights you can accept.'
     },
 
+
+    // wait till your time
     cafe: {
         key:         'cafe',
         isDisabled:  (state, params = {}) => false,
