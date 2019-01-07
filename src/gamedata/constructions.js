@@ -1,67 +1,14 @@
 
 import _ from 'lodash';
 
+import { move } from "./passengers";
+
 const buy = (state, item_key) => {
     console.log('buy', item_key);
     state.constructions[item_key]++;
     return state;
 };
 
-const move = (state, direction = {from: '', to: ''}, predicate = passenger => true) => {
-    let processedPassengers = _.remove(
-        state.processing[direction.from],
-        passenger => passenger.busy_till < state.tick && predicate(passenger)
-    );
-
-    // If passengers are already processed
-    // they are going to queue to the to construction
-    if (processedPassengers.length > 0) {
-        state.queue[direction.to] = _.concat(state.queue[direction.to], processedPassengers);
-    }
-
-    // number of the construction multiplied on the construction bandwidth
-    let totalBandwidth = constructions[direction.from].bandwidth * state.constructions[direction.from];
-    // passengers that now in the construction
-    let numberOfProcessingPassengers = state.processing[direction.from].length;
-    // passengers that are waiting for getting into the to construction
-    let numberOfPassengersInQueue = state.queue[direction.from].length;
-    
-    if (numberOfProcessingPassengers < totalBandwidth) {
-        if (numberOfPassengersInQueue > 0) {
-            let vacantPlaces = totalBandwidth - numberOfProcessingPassengers;
-
-            // If there are more vacant places than passengers in the queue
-            // Then move all the queue
-            let numberOfPassengersToMove = Math.min(vacantPlaces, numberOfPassengersInQueue);
-
-            let passengersToProcessing = _.take(state.queue[direction.from], numberOfPassengersToMove);
-
-            if (numberOfPassengersToMove !== passengersToProcessing.length) {
-                console.log(
-                    "Wrong count: count !== to_processing.length ",
-                    numberOfPassengersToMove,
-                    passengersToProcessing.length
-                );
-            }
-
-            // Every passenger gets a time-marker: till when they will be processing
-            // from now + @processing_time of the construction
-            _.each(passengersToProcessing, passenger => {
-                passenger.busy_till = state.tick + constructions[direction.from].processing_time
-            });
-
-            // Add passengers to processing
-            state.processing[direction.from] = _.concat(state.processing[direction.from], passengersToProcessing);
-            // Remove passengers from the queue
-            state.queue[direction.from] = _.drop(
-                state.queue[direction.from],
-                numberOfPassengersToMove
-            );
-        }
-    }
-
-    return state;
-};
 
 export const constructions = {
     luggageCart: {
@@ -73,10 +20,9 @@ export const constructions = {
             return state;
         },
         name:        'Luggage Cart',
-        cost:        {money: 1620},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 1000000},
+        bandwidth:   0,
+        processing_time: 0,
         description: 'These cars drive luggage from the airport to a plane.'
     },
 
@@ -86,15 +32,14 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'escalator'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'escalator', to: 'passport'}, passenger => passenger.dir === 'arrival');
-            state = move(state, {from: 'escalator', to: 'bus'}, passenger => passenger.dir === 'departure');
+            state = move(state, {from: 'escalator', to: 'passport', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {from: 'escalator', to: 'bus', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
             return state;
         },
         name:        'Escalator',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 8000},
+        bandwidth:   12,
+        processing_time: 6,
         description: 'Transports people between floors.'
     },
 
@@ -104,15 +49,14 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'fastRoad'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'fastRoad', to: 'security'}, passenger => passenger.dir === 'arrival');
-            state = move(state, {from: 'fastRoad', to: 'passport'}, passenger => passenger.dir === 'departure');
+            state = move(state, {from: 'fastRoad', to: 'security', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {from: 'fastRoad', to: 'passport', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
             return state;
         },
         name:        'Fast Road',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 6000},
+        bandwidth:   24,
+        processing_time: 12,
         description: 'Allows people to move faster between gates.'
     },
 
@@ -122,14 +66,13 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'dutyFree'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'dutyFree', to: 'escalator'});
+            state = move(state, {from: 'dutyFree', to: 'escalator', predicate: passenger => true, modifier: passenger => passenger});
             return state;
         },
         name:        'Duty Free',
-        cost:        {money: 3000},
-        bandwidth:   50,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 12000},
+        bandwidth:   12,
+        processing_time: 20,
         description: 'Passengers can buy some gifts here while their flight is late.'
     },
 
@@ -139,15 +82,17 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'bus'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'bus', to: 'escalator'}, passenger => passenger.dir === 'arrival');
-            state = move(state, {from: 'bus', to: 'runway'}, passenger => passenger.dir === 'departure');
+            state = move(state, {from: 'bus', to: 'escalator', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {from: 'bus', to: 'runway', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
+
+            state = move(state, {from: 'bus', to: 'escalator', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {from: 'bus', to: 'runway', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
             return state;
         },
         name:        'Bus',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 8000},
+        bandwidth:   30,
+        processing_time: 12,
         description: 'Transports people from airport to a plane.'
     },
 
@@ -157,15 +102,14 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'passport'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'passport', to: 'fastRoad'}, passenger => passenger.dir === 'arrival');
-            state = move(state, {from: 'passport', to: 'dutyFree'}, passenger => passenger.dir === 'departure');
+            state = move(state, {from: 'passport', to: 'fastRoad', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {from: 'passport', to: 'dutyFree', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
             return state;
         },
         name:        'Passport Control',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 2000},
+        bandwidth:   2,
+        processing_time: 4,
         description: 'Checks that passengers have valid documents to cross over the country.'
     },
 
@@ -175,15 +119,14 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'security'),
         onTick:      (state, params = {}) => {
             // to baggage line
-            state = move(state, {from: 'security', to: 'luggageLine'}, passenger => passenger.dir === 'arrival');
-            state = move(state, {from: 'security', to: 'fastRoad'}, passenger => passenger.dir === 'departure');
+            state = move(state, {from: 'security', to: 'luggageLine', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {from: 'security', to: 'fastRoad', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
             return state;
         },
         name:        'Security',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 8000},
+        bandwidth:   12,
+        processing_time: 8,
         description: 'Provides security check of passengers and their carryon.'
     },
 
@@ -193,14 +136,13 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'checkIn'),
         onTick:      (state, params = {}) => {
             // to security
-            state = move(state, {from: 'checkIn', next: 'security'});
+            state = move(state, {from: 'checkIn', next: 'security', predicate: passenger => true, modifier: passenger => passenger});
             return state;
         },
         name:        'Check-in',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 16000},
+        bandwidth:   8,
+        processing_time: 10,
         description: 'Allow passengers to register on a flight offline.'
     },
 
@@ -213,9 +155,8 @@ export const constructions = {
             return state;
         },
         name:        'Hotel',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
+        cost:        {money: 24000},
+        bandwidth:   16,
         processing_time: 360,
         description: 'Passengers can have some rest here during a long transfer'
     },
@@ -226,14 +167,13 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'luggageLine'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'luggageLine', to: 'hall'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'luggageLine', to: 'hall', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
             return state;
         },
         name:        'Luggage Line',
-        cost:        {money: 800},
-        bandwidth:   6,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 14000},
+        bandwidth:   64,
+        processing_time: 16,
         description: 'Passengers will take their luggage here'
     },
 
@@ -242,27 +182,25 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'hall'),
         onTick:      (state, params = {}) => {
-            // all to cafe
-            state = move(state, {from: 'hall', next: 'cafe'}, passenger => _.random(1, 10) === 1);
 
             // arrival to taxi and rail
-            state = move(state, {from: 'hall', next: 'parking'}, passenger => _.random(1, 4) === 1 && passenger.dir === 'arrival');
-            state = move(state, {from: 'hall', next: 'rail'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'hall', next: 'parking', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger}, passenger => _.random(1, 4) === 1 && passenger.dir === 'arrival');
+            state = move(state, {from: 'hall', next: 'rail', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
 
             // transfer to hotel and checkIn
-            state = move(state, {from: 'hall', next: 'hotel'}, passenger => _.random(1, 7) === 1 && passenger.dir === 'transfer');
-            state = move(state, {from: 'hall', next: 'checkIn'}, passenger => passenger.dir === 'transfer');
+            state = move(state, {from: 'hall', next: 'hotel', predicate: passenger => passenger.dir === 'transfer', modifier: passenger => passenger}, passenger => _.random(1, 20) === 1 || (_.random(1, 5) === 1 && passenger.dir === 'transfer'));
+            state = move(state, {from: 'hall', next: 'checkIn', predicate: passenger => passenger.dir === 'transfer', modifier: passenger => passenger}, passenger => passenger.dir === 'transfer');
 
             // departure to checkIn
-            state = move(state, {from: 'hall', next: 'checkIn'}, passenger => passenger.dir === 'departure');
+            state = move(state, {from: 'hall', next: 'checkIn', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
 
             return state;
         },
         name:        'Hall',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
+        cost:        {money: 42000},
+        bandwidth:   200,
+
+        processing_time: 6,
         description: 'Common place for passengers to wait for their flight. Make sure it has enough benches.'
     },
 
@@ -272,33 +210,14 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'runway'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'runway', to: 'bus'});
+            state = move(state, {from: 'runway', to: 'bus', predicate: passenger => true, modifier: passenger => passenger});
             return state;
         },
         name:        'Runway',
-        cost:        {money: 800},
+        cost:        {money: 28000},
         bandwidth:   100,
-        threshold:   20,
-        processing_time: 10,
+        processing_time: 5,
         description: 'The main airport construction. The more runways you have the more flights you can accept.'
-    },
-
-
-    // wait till your time
-    cafe: {
-        key:         'cafe',
-        isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'cafe'),
-        onTick:      (state, params = {}) => {
-            // some code
-            return state;
-        },
-        name:        'Cafe',
-        cost:        {money: 800},
-        bandwidth:   10,
-        threshold:   20,
-        processing_time: 10,
-        description: 'Passengers can drink here until they stop worry about their flight'
     },
 
     rail: {
@@ -308,13 +227,12 @@ export const constructions = {
         onTick:      (state, params = {}) => {
             // generate dirty departure passengers, pick clean arrival passengers
             // move dirty departure passengers to hall
-            state = move(state, {from: 'rail', to: 'hall'});
+            state = move(state, {from: 'rail', to: 'hall', predicate: passenger => true, modifier: passenger => passenger});
             return state;
         },
         name:        'Rail',
-        cost:        {money: 800},
-        bandwidth:   50,
-        threshold:   10,
+        cost:        {money: 22000},
+        bandwidth:   56,
         processing_time: 12,
         description: 'This rail transports passengers from a city to the airport.'
     },
@@ -326,14 +244,17 @@ export const constructions = {
         onTick:      (state, params = {}) => {
             // generate dirty departure passengers, pick clean arrival passengers
             // move dirty departure passengers to hall
-            state = move(state, {from: 'parking', to: 'hall'});
+            state = move(state, {from: 'parking', to: 'hall', predicate: passenger => true, modifier: passenger => passenger});
             return state;
         },
         name:        'Parking',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   5,
+        cost:        {money: 6000},
+        bandwidth:   12,
         processing_time: 5,
         description: 'People are coming here from a city.'
     },
 };
+
+_.each(constructions, (construction, key) => {
+    console.log(construction.key, (10000 * construction.bandwidth / construction.processing_time / construction.cost.money));
+});
