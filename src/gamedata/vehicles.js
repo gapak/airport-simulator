@@ -2,7 +2,7 @@
 import _ from 'lodash';
 
 const gen_passenger = (direction) => {
-    return {dir: direction, dirty: true};
+    return {dir: direction};
 };
 
 export const vehicles = {
@@ -16,6 +16,8 @@ export const vehicles = {
                     new_passengers.push(gen_passenger(_.random(1, 2) === 1 ? 'arrival' : 'transfer'));
                 });
                 state.queue.runway = _.concat(state.queue.runway, new_passengers);
+
+
             }
             return state;
         },
