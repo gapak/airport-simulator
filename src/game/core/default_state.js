@@ -20,7 +20,8 @@ const default_state = {
         runway: 1,
         cafe: 1,
         rail: 1,
-        parking: 1
+        parking: 1,
+        nowhere: 1
     },
 
     queue: {
@@ -38,7 +39,8 @@ const default_state = {
         runway: [],
         cafe: [],
         rail: [],
-        parking: []
+        parking: [],
+        nowhere: []
     },
 
     processing: {
@@ -56,7 +58,8 @@ const default_state = {
         runway: [],
         cafe: [],
         rail: [],
-        parking: []
+        parking: [],
+        nowhere: []
     },
 
     vehicles_passengers: {
