@@ -72,7 +72,10 @@ class App extends Component {
                             Queue: {state.queue[item.key].length}
                         </div>
                         <div className="flex-element">
-                            Load: {state.processing[item.key].length} / { item.bandwidth * state.constructions[item.key] } ({ item.bandwidth } X { state.constructions[item.key] })
+                            Load:
+                            {state.processing[item.key].length} /
+                            { item.bandwidth * state.constructions[item.key] }
+                            ({ item.bandwidth } X { state.constructions[item.key] })
                         </div>
                     </div>
                 </div>
@@ -91,10 +94,10 @@ class App extends Component {
                             </div>
                         </div>
 
-                        {constructionBox(constructions.innerLuggageCart)}
+                        {constructionBox(constructions.luggageCart)}
                         {constructionBox(constructions.dutyFree)}
-                        {constructionBox(constructions.innerEscalator)}
-                        {constructionBox(constructions.innerFastRoad)}
+                        {constructionBox(constructions.escalator)}
+                        {constructionBox(constructions.fastRoad)}
                         {constructionBox(constructions.checkIn)}
 
                         <div className="box"></div>
@@ -105,16 +108,13 @@ class App extends Component {
                             {constructionBox(constructions.runway)}
                         </div>
                         <div className="splitOnTwoSides">
-                            {constructionBox(constructions.innerBus)}
-                            {constructionBox(constructions.outBus)}
+                            {constructionBox(constructions.bus)}
                         </div>
                         <div className="splitOnTwoSides">
-                            {constructionBox(constructions.innerPassport)}
-                            {constructionBox(constructions.outPassport)}
+                            {constructionBox(constructions.passport)}
                         </div>
                         <div className="splitOnTwoSides">
-                            {constructionBox(constructions.innerSecurity)}
-                            {constructionBox(constructions.outSecurity)}
+                            {constructionBox(constructions.security)}
                         </div>
                         <div className="box">
                             {constructionBox(constructions.hall)}
@@ -129,10 +129,6 @@ class App extends Component {
                         <div className="box">
                             <div>Money: ${state.money}</div>
                         </div>
-
-                        {constructionBox(constructions.outLuggageCart)}
-                        {constructionBox(constructions.outEscalator)}
-                        {constructionBox(constructions.outFastRoad)}
                         {constructionBox(constructions.luggageLine)}
                         {constructionBox(constructions.hotel)}
 
