@@ -3,24 +3,26 @@ import _ from 'lodash';
 
 import { constructions } from "./constructions";
 
-export const move = (state, direction = {from: '', to: ''}, predicate = passenger => true) => {
+export const move = (state, params = {from: '', to: '', predicate: passenger => true, modifier: passenger => passenger}) => {
+    params = _.assign({from: '', to: '', predicate: passenger => true, modifier: passenger => passenger}, params);
+
     let processedPassengers = _.remove(
-        state.processing[direction.from],
-        passenger => passenger.busy_till < state.tick && predicate(passenger)
+        state.processing[params.from],
+        passenger => passenger.busy_till < state.tick && params.predicate(passenger)
     );
 
     // If passengers are already processed
     // they are going to queue to the to construction
     if (processedPassengers.length > 0) {
-        state.queue[direction.to] = _.concat(state.queue[direction.to], processedPassengers);
+        state.queue[params.to] = _.concat(state.queue[params.to], processedPassengers);
     }
 
     // number of the construction multiplied on the construction bandwidth
-    let totalBandwidth = constructions[direction.from].bandwidth * state.constructions[direction.from];
+    let totalBandwidth = constructions[params.from].bandwidth * state.constructions[params.from];
     // passengers that now in the construction
-    let numberOfProcessingPassengers = state.processing[direction.from].length;
+    let numberOfProcessingPassengers = state.processing[params.from].length;
     // passengers that are waiting for getting into the to construction
-    let numberOfPassengersInQueue = state.queue[direction.from].length;
+    let numberOfPassengersInQueue = state.queue[params.from].length;
 
     if (numberOfProcessingPassengers < totalBandwidth) {
         if (numberOfPassengersInQueue > 0) {
@@ -30,7 +32,7 @@ export const move = (state, direction = {from: '', to: ''}, predicate = passenge
             // Then move all the queue
             let numberOfPassengersToMove = Math.min(vacantPlaces, numberOfPassengersInQueue);
 
-            let passengersToProcessing = _.take(state.queue[direction.from], numberOfPassengersToMove);
+            let passengersToProcessing = _.take(state.queue[params.from], numberOfPassengersToMove);
 
             if (numberOfPassengersToMove !== passengersToProcessing.length) {
                 console.log(
@@ -43,14 +45,15 @@ export const move = (state, direction = {from: '', to: ''}, predicate = passenge
             // Every passenger gets a time-marker: till when they will be processing
             // from now + @processing_time of the construction
             _.each(passengersToProcessing, passenger => {
-                passenger.busy_till = state.tick + constructions[direction.from].processing_time
+                passenger.busy_till = state.tick + constructions[params.from].processing_time
+                passenger = params.modifier(passenger);
             });
 
             // Add passengers to processing
-            state.processing[direction.from] = _.concat(state.processing[direction.from], passengersToProcessing);
+            state.processing[params.from] = _.concat(state.processing[params.from], passengersToProcessing);
             // Remove passengers from the queue
-            state.queue[direction.from] = _.drop(
-                state.queue[direction.from],
+            state.queue[params.from] = _.drop(
+                state.queue[params.from],
                 numberOfPassengersToMove
             );
         }

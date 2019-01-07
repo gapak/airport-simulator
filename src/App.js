@@ -72,10 +72,7 @@ class App extends Component {
                             Queue: {state.queue[item.key].length}
                         </div>
                         <div className="flex-element">
-                            Load:
-                            {state.processing[item.key].length} /
-                            { item.bandwidth * state.constructions[item.key] }
-                            ({ item.bandwidth } X { state.constructions[item.key] })
+                            Load: {state.processing[item.key].length}/{ item.bandwidth * state.constructions[item.key] } ({ item.bandwidth }×{ state.constructions[item.key] })
                         </div>
                     </div>
                 </div>
