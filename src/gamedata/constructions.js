@@ -11,10 +11,10 @@ const buy = (state, item_key) => {
 
 
 export const constructions = {
-    innerLuggageCart: {
-        key:         'innerLuggageCart',
+    luggageCart: {
+        key:         'luggageCart',
         isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'innerLuggageCart'),
+        onClick:     (state, params = {}) => buy(state, 'luggageCart'),
         onTick:      (state, params = {}) => {
             // some code
             return state;
@@ -27,28 +27,14 @@ export const constructions = {
         description: 'These cars drive luggage from the airport to a plane.'
     },
 
-    outLuggageCart: {
-        key:         'outLuggageCart',
-        isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'outLuggageCart'),
+    escalator: {
+        key:         'escalator',
+        isDisabled:  (state, params = {}) => state.escalator < 5,
+        onClick:     (state, params = {}) => buy(state, 'escalator'),
         onTick:      (state, params = {}) => {
             // some code
-            return state;
-        },
-        name:        'Luggage Cart',
-        cost:        {money: 1620},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
-        description: 'These cars drive luggage from a plane to the airport.'
-    },
-
-    innerEscalator: {
-        key:         'innerEscalator',
-        isDisabled:  (state, params = {}) => state.innerEscalator < 5,
-        onClick:     (state, params = {}) => buy(state, 'innerEscalator'),
-        onTick:      (state, params = {}) => {
-            // some code
+            state = move(state, {from: 'escalator', to: 'passport'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'escalator', to: 'bus'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Escalator',
@@ -59,28 +45,14 @@ export const constructions = {
         description: 'Transports people between floors.'
     },
 
-    outEscalator: {
-        key:         'outEscalator',
+    fastRoad: {
+        key:         'fastRoad',
         isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'outEscalator'),
+        onClick:     (state, params = {}) => buy(state, 'fastRoad'),
         onTick:      (state, params = {}) => {
             // some code
-            return state;
-        },
-        name:        'Escalator',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
-        description: 'Transports people between floors.'
-    },
-
-    innerFastRoad: {
-        key:         'innerFastRoad',
-        isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'innerFastRoad'),
-        onTick:      (state, params = {}) => {
-            // some code
+            state = move(state, {from: 'fastRoad', to: 'security'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'fastRoad', to: 'passport'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Fast Road',
@@ -90,23 +62,6 @@ export const constructions = {
         processing_time: 5,
         description: 'Allows people to move faster between gates.'
     },
-
-    outFastRoad: {
-        key:         'outFastRoad',
-        isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'outFastRoad'),
-        onTick:      (state, params = {}) => {
-            // some code
-            return state;
-        },
-        name:        'Fast Road',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
-        description: 'Allows people to move faster between gates.'
-    },
-
 
     dutyFree: {
         key:         'dutyFree',
@@ -114,6 +69,7 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'dutyFree'),
         onTick:      (state, params = {}) => {
             // some code
+            state = move(state, {from: 'dutyFree', to: 'escalator'});
             return state;
         },
         name:        'Duty Free',
@@ -124,13 +80,14 @@ export const constructions = {
         description: 'Passengers can buy some gifts here while their flight is late.'
     },
 
-    innerBus: {
-        key:         'innerBus',
+    bus: {
+        key:         'bus',
         isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'innerBus'),
+        onClick:     (state, params = {}) => buy(state, 'bus'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'innerBus', to: 'innerPassport'});
+            state = move(state, {from: 'bus', to: 'escalator'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'bus', to: 'runway'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Bus',
@@ -141,29 +98,14 @@ export const constructions = {
         description: 'Transports people from airport to a plane.'
     },
 
-    outBus: {
-        key:         'outBus',
+    passport: {
+        key:         'passport',
         isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'outBus'),
+        onClick:     (state, params = {}) => buy(state, 'passport'),
         onTick:      (state, params = {}) => {
             // some code
-            return state;
-        },
-        name:        'Bus',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
-        description: 'Transports people from plane to the airport.'
-    },
-
-    innerPassport: {
-        key:         'innerPassport',
-        isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'innerPassport'),
-        onTick:      (state, params = {}) => {
-            // some code
-            state = move(state, {from: 'innerPassport', to: 'innerSecurity'});
+            state = move(state, {from: 'passport', to: 'fastRoad'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'passport', to: 'dutyFree'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Passport Control',
@@ -174,47 +116,14 @@ export const constructions = {
         description: 'Checks that passengers have valid documents to cross over the country.'
     },
 
-    outPassport: {
-        key:         'outPassport',
+    security: {
+        key:         'security',
         isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'outPassport'),
-        onTick:      (state, params = {}) => {
-            // some code
-            state = move(state, {from: 'outSecurity', next: 'outPassport'});
-            return state;
-        },
-        name:        'Passport Control',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
-        description: 'Checks that passengers have valid documents to get into the country.'
-    },
-
-    innerSecurity: {
-        key:         'innerSecurity',
-        isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'innerSecurity'),
+        onClick:     (state, params = {}) => buy(state, 'security'),
         onTick:      (state, params = {}) => {
             // to baggage line
-            state = move(state, {from: 'innerSecurity', to: 'luggageLine'});
-            return state;
-        },
-        name:        'Security',
-        cost:        {money: 800},
-        bandwidth:   20,
-        threshold:   20,
-        processing_time: 5,
-        description: 'Provides security check of passengers and their carryon.'
-    },
-
-    outSecurity: {
-        key:         'outSecurity',
-        isDisabled:  (state, params = {}) => false,
-        onClick:     (state, params = {}) => buy(state, 'outSecurity'),
-        onTick:      (state, params = {}) => {
-            // to passport
-            state = move(state, {from: 'outSecurity', next: 'outPassport'});
+            state = move(state, {from: 'security', to: 'luggageLine'}, passenger => passenger.dir === 'arrival');
+            state = move(state, {from: 'security', to: 'fastRoad'}, passenger => passenger.dir === 'departure');
             return state;
         },
         name:        'Security',
@@ -231,7 +140,7 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'checkIn'),
         onTick:      (state, params = {}) => {
             // to security
-            state = move(state, {from: 'checkIn', next: 'outSecurity'});
+            state = move(state, {from: 'checkIn', next: 'security'});
             return state;
         },
         name:        'Check-in',
@@ -264,7 +173,7 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'luggageLine'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'luggageLine', next: 'hall'});
+            state = move(state, {from: 'luggageLine', to: 'hall'}, passenger => passenger.dir === 'arrival');
             return state;
         },
         name:        'Luggage Line',
@@ -310,7 +219,7 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'runway'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'runway', to: 'innerBus'});
+            state = move(state, {from: 'runway', to: 'bus'});
             return state;
         },
         name:        'Runway',
@@ -321,6 +230,8 @@ export const constructions = {
         description: 'The main airport construction. The more runways you have the more flights you can accept.'
     },
 
+
+    // wait till your time
     cafe: {
         key:         'cafe',
         isDisabled:  (state, params = {}) => false,
