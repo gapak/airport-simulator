@@ -5,6 +5,8 @@ import _ from 'lodash';
 const default_state = {
     money: 4200,
 
+    workers: [],
+
     constructions: {
         luggageCart: 1,
         escalator: 1,
@@ -21,7 +23,9 @@ const default_state = {
         cafe: 1,
         rail: 1,
         parking: 1,
-        nowhere: 1
+        runwayBuffer: 1,
+        railBuffer: 1,
+        parkingBuffer: 1
     },
 
     queue: {
@@ -40,7 +44,9 @@ const default_state = {
         cafe: [],
         rail: [],
         parking: [],
-        nowhere: []
+        runwayBuffer: [],
+        railBuffer: [],
+        parkingBuffer: []
     },
 
     processing: {
@@ -59,7 +65,9 @@ const default_state = {
         cafe: [],
         rail: [],
         parking: [],
-        nowhere: []
+        runwayBuffer: [],
+        railBuffer: [],
+        parkingBuffer: []
     },
 
     vehicles_passengers: {
