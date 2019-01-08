@@ -18,7 +18,7 @@ import Helpers from "./game/Helpers";
 
 import {isEnough, chargeCost} from './bdcgin/Gin';
 import {constructions} from './gamedata/constructions';
-
+import {workers} from './gamedata/workers';
 
 class App extends Component {
     constructor(props) {
@@ -39,6 +39,7 @@ class App extends Component {
 
     render() {
         const state = this.state;
+
         const GinButton = (props) => {
             let item = props.item;
             return (item.isLocked && item.isLocked(this.state))
@@ -61,6 +62,18 @@ class App extends Component {
             onClick: (state) => props.item.onClick(state)
         }} />;
 
+        const HireGinButton = (props) => <GinButton item={{
+            name: "Hire",
+            isDisabled: (state) => props.item.isDisabled(state),
+            onClick: (state) => props.item.onClick(state)
+        }} />;
+
+        const FireGinButton = (props) => <GinButton item={{
+            name: "Fire",
+            isDisabled: (state) => props.item.isDisabled(state),
+            onClick: (state) => props.item.onClick(state)
+        }} />;
+
 
         let constructionBox = (item, key) =>
             <div key={item.key} className={item.key + " box smallBorders background"}>
@@ -72,7 +85,10 @@ class App extends Component {
                             Queue: {state.queue[item.key].length}
                         </div>
                         <div className="flex-element">
-                            Load: {state.processing[item.key].length}/{ item.bandwidth * state.constructions[item.key] } ({ item.bandwidth }×{ state.constructions[item.key] })
+                            Load:
+                            {state.processing[item.key].length}/
+                            { item.bandwidth * state.constructions[item.key] } (
+                            { item.bandwidth }×{ state.constructions[item.key] })
                         </div>
                     </div>
                 </div>
@@ -125,6 +141,12 @@ class App extends Component {
                     <div className="flex-container-column">
                         <div className="box">
                             <div>Money: ${state.money}</div>
+                            <div className="box smallBorders background">Workers: {state.workers.length}
+                                <div className="center">
+                                    <div className="fat"><HireGinButton item={workers.hire}/></div>
+                                    <div className="fat"><FireGinButton item={workers.fire}/></div>
+                                </div>
+                            </div>
                         </div>
                         {constructionBox(constructions.luggageLine)}
                         {constructionBox(constructions.hotel)}
