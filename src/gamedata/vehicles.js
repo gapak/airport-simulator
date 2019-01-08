@@ -1,5 +1,6 @@
 
 import _ from 'lodash';
+import { move } from "./passengers";
 
 const gen_passenger = (direction) => {
     return {dir: direction};
@@ -17,6 +18,21 @@ export const vehicles = {
                     new_passengers.push(gen_passenger('arrival'));
                 });
                 state.queue.runway = _.concat(state.queue.runway, new_passengers);
+
+                let passengers_count = 0;
+
+                state = move(state, {
+                    from: 'runwayBuffer',
+                    to: 'runway',
+                    predicate: passenger => passenger.dir === 'departure',
+                    modifier: passenger => {
+                        passengers_count++;
+                        passenger.dir = passenger.dir === 'departure' ? 'arrival' : 'departure';
+                        return passenger;
+                    }
+                });
+
+                state.money += passengers_count * 10;
             }
             return state;
         },
@@ -33,6 +49,16 @@ export const vehicles = {
                     new_passengers.push(gen_passenger('departure'));
                 });
                 state.queue.rail = _.concat(state.queue.rail, new_passengers);
+
+                state = move(state, {
+                    from: 'railBuffer',
+                    to: 'rail',
+                    predicate: passenger => passenger.dir === 'departure',
+                    modifier: passenger => {
+                        passenger.dir = passenger.dir === 'departure' ? 'arrival' : 'departure';
+                        return passenger;
+                    }
+                });
             }
             return state;
         },
@@ -49,6 +75,16 @@ export const vehicles = {
                     new_passengers.push(gen_passenger('departure'));
                 });
                 state.queue.parking = _.concat(state.queue.parking, new_passengers);
+
+                state = move(state, {
+                    from: 'parkingBuffer',
+                    to: 'parking',
+                    predicate: passenger => passenger.dir === 'departure',
+                    modifier: passenger => {
+                        passenger.dir = passenger.dir === 'departure' ? 'arrival' : 'departure';
+                        return passenger;
+                    }
+                });
             }
             return state;
         },

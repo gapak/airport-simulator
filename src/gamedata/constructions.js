@@ -281,21 +281,7 @@ export const constructions = {
         key:         'runwayBuffer',
         isDisabled:  (state, params = {}) => false,
         onTick:      (state, params = {}) => {
-            let passengers_count = 0;
-
-            state = move(state, {
-                from: 'runwayBuffer',
-                to: 'runway',
-                predicate: passenger => passenger.dir === 'departure',
-                modifier: passenger => {
-                    passengers_count++;
-                    passenger.dir = passenger.dir === 'departure' ? 'arrival' : 'departure';
-                    return passenger;
-                }
-            });
-
-            state.money += passengers_count * 10;
-
+            //some code
             return state;
         },
         cost:        {money: 100},
@@ -309,15 +295,7 @@ export const constructions = {
         key:         'railBuffer',
         isDisabled:  (state, params = {}) => false,
         onTick:      (state, params = {}) => {
-            state = move(state, {
-                from: 'railBuffer',
-                to: 'rail',
-                predicate: passenger => passenger.dir === 'departure',
-                modifier: passenger => {
-                    passenger.dir = passenger.dir === 'departure' ? 'arrival' : 'departure';
-                    return passenger;
-                }
-            });
+            //some code
             return state;
         },
         cost:        {money: 100},
@@ -331,15 +309,7 @@ export const constructions = {
         key:         'parkingBuffer',
         isDisabled:  (state, params = {}) => false,
         onTick:      (state, params = {}) => {
-            state = move(state, {
-                from: 'parkingBuffer',
-                to: 'parking',
-                predicate: passenger => passenger.dir === 'departure',
-                modifier: passenger => {
-                    passenger.dir = passenger.dir === 'departure' ? 'arrival' : 'departure';
-                    return passenger;
-                }
-            });
+            //some code
             return state;
         },
         cost:        {money: 100},
