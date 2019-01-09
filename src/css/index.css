@@ -14,26 +14,16 @@ html, body {
     display: flex;
 }
 
-.wide {
-    display: flex;
-    flex-direction: column;
+.air {
     padding: 3px;
-    width: 200%;
 }
 
-.setWidth350 {
-    width: 350px;
+.background {
+    background-color: rgba(255, 250, 240, 0.6);
 }
 
-.splitOnTwoSides {
-    display: flex;
-    margin: 1px;
-    padding: 3px;
-    height: 100%;
-}
-
-.splitOnTwoSides > div {
-    width: 100%;
+.boldBorders {
+    border: 2px solid black;
 }
 
 .box {
@@ -46,19 +36,6 @@ html, body {
     padding: 3px;
 }
 
-.background {
-    background-color: rgba(255, 250, 240, 0.6);
-}
-
-.disabled {
-    color: #BCC5D6;
-}
-
-.stretch {
-    display: flex;
-    align-content: space-between;
-}
-
 .center {
     display: flex;
     flex-direction: row;
@@ -66,13 +43,18 @@ html, body {
     align-items: center;
 }
 
-.boldBorders {
-    border: 2px solid black;
+.disabled {
+    color: #BCC5D6;
 }
 
-.smallBorders {
-    border: 1px solid black;
-    border-radius: 15px;
+.fat {
+    padding: 6px;
+    margin: 6px;
+}
+
+.filament {
+    padding: 2px;
+    margin: 2px;
 }
 
 .flex-container-column {
@@ -91,6 +73,24 @@ html, body {
 
 .flex-element {
     flex: 1;
+}
+
+.highlight {
+    font-size: 22px;
+    color: darkred;
+}
+.moat {
+    padding: 30px 100px;
+    margin: 30px 100px;
+}
+
+.setWidth350 {
+    width: 350px;
+}
+
+.smallBorders {
+    border: 1px solid black;
+    border-radius: 15px;
 }
 
 .slim {
@@ -120,28 +120,31 @@ html, body {
     padding: 0px;
 }
 
-.air {
+.splitOnTwoSides {
+    display: flex;
+    margin: 1px;
     padding: 3px;
+    height: 100%;
 }
-.filament {
-    padding: 2px;
-    margin: 2px;
+
+.splitOnTwoSides > div {
+    width: 100%;
 }
-.fat {
-    padding: 6px;
-    margin: 6px;
+
+.stretch {
+    display: flex;
+    align-content: space-between;
 }
-.moat {
-    padding: 30px 100px;
-    margin: 30px 100px;
+
+.wide {
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+    width: 200%;
 }
 
 .clearfix::after {
     content: "";
     clear: both;
     display: table;
-}
-
-div {
-    /*  border: 1px solid; /*  for debug */
 }

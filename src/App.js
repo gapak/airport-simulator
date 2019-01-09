@@ -81,8 +81,8 @@ class App extends Component {
                     <div> { item.name }: <BuyGinButton item={item}/>
                     </div>
                     <div className="flex-container-column">
-                        <div className="flex-element">
-                            Queue: {state.queue[item.key].length}
+                        <div className="center fat highlight">
+                            Queue: <div>{state.queue[item.key].length}</div>
                         </div>
                         <div className="flex-element">
                             Load:
