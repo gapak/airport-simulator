@@ -50,6 +50,16 @@ export const rules = {
             return store;
         }
     },
+
+    salary: {
+        onTick: (state, params = {}) => {
+            if (state.tick % 24 === 0) {
+                state.money -= state.workers.length * 10;
+                console.log('Salary!');
+            }
+            return state;
+        }
+    },
 };
 
 
