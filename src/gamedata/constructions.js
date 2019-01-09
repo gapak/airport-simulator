@@ -38,8 +38,18 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'bus'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'bus', to: 'escalator', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
-            state = move(state, {from: 'bus', to: 'runway', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
+            state = move(state, {
+                from: 'bus',
+                to: 'escalator',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'bus',
+                to: 'runway',
+                predicate: passenger => passenger.dir === 'departure',
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Bus',
@@ -55,7 +65,12 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'checkIn'),
         onTick:      (state, params = {}) => {
             // to security
-            state = move(state, {from: 'checkIn', to: 'security', predicate: passenger => true, modifier: passenger => passenger});
+            state = move(state, {
+                from: 'checkIn',
+                to: 'security',
+                predicate: passenger => true,
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Check-in',
@@ -70,8 +85,12 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'dutyFree'),
         onTick:      (state, params = {}) => {
-            // some code
-            state = move(state, {from: 'dutyFree', to: 'escalator', predicate: passenger => true, modifier: passenger => passenger});
+            state = move(state, {
+                from: 'dutyFree',
+                to: 'escalator',
+                predicate: passenger => true,
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Duty Free',
@@ -87,8 +106,18 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'escalator'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'escalator', to: 'passport', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
-            state = move(state, {from: 'escalator', to: 'bus', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
+            state = move(state, {
+                from: 'escalator',
+                to: 'passport',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'escalator',
+                to: 'bus',
+                predicate: passenger => passenger.dir === 'departure',
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Escalator',
@@ -104,8 +133,18 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'fastRoad'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'fastRoad', to: 'security', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
-            state = move(state, {from: 'fastRoad', to: 'passport', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
+            state = move(state, {
+                from: 'fastRoad',
+                to: 'security',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'fastRoad',
+                to: 'passport',
+                predicate: passenger => passenger.dir === 'departure',
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Fast Road',
@@ -120,24 +159,42 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'hall'),
         onTick:      (state, params = {}) => {
+            let passengers_count = 0;
 
-            // arrival to taxi and rail
-            state = move(state, {from: 'hall', to: 'parking', predicate: passenger => _.random(1, 4) === 1 && passenger.dir === 'arrival', modifier: passenger => passenger});
-            state = move(state, {from: 'hall', to: 'rail', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {
+                from: 'hall',
+                to: 'hotel',
+                predicate: passenger => _.random(1, 20) === 1 || (_.random(1, 5) === 1 && passenger.dir === 'arrival'),
+                modifier: passenger => {
+                    passengers_count++;
+                    return passenger;
+                }
+            });
+            state = move(state, {
+                from: 'hall',
+                to: 'parking',
+                predicate: passenger => _.random(1, 4) === 1 && passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'hall',
+                to: 'rail',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'hall',
+                to: 'checkIn',
+                predicate: passenger => passenger.dir === 'departure',
+                modifier: passenger => passenger
+            });
 
-            // transfer to hotel and checkIn
-            state = move(state, {from: 'hall', to: 'hotel', predicate: passenger => _.random(1, 20) === 1 || (_.random(1, 5) === 1 && passenger.dir === 'transfer'), modifier: passenger => passenger});
-            state = move(state, {from: 'hall', to: 'checkIn', predicate: passenger => passenger.dir === 'transfer', modifier: passenger => passenger});
-
-            // departure to checkIn
-            state = move(state, {from: 'hall', to: 'checkIn', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
-
+            state.money += passengers_count * 10;
             return state;
         },
         name:        'Hall',
         cost:        {money: 70000},
         bandwidth:   90,
-
         processing_time: 10,
         description: 'Common place for passengers to wait for their flight. Make sure it has enough benches.'
     },
@@ -147,8 +204,12 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'hotel'),
         onTick:      (state, params = {}) => {
-            // some code
-            state = move(state, {from: 'hotel', to: 'hall', predicate: passenger => true, modifier: passenger => passenger});
+            state = move(state, {
+                from: 'hotel',
+                to: 'hall',
+                predicate: passenger => true,
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Hotel',
@@ -178,8 +239,12 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'luggageLine'),
         onTick:      (state, params = {}) => {
-            // some code
-            state = move(state, {from: 'luggageLine', to: 'hall', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {
+                from: 'luggageLine',
+                to: 'hall',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Luggage Line',
@@ -196,8 +261,18 @@ export const constructions = {
         onTick:      (state, params = {}) => {
             // generate dirty departure passengers, pick clean arrival passengers
             // move dirty departure passengers to hall
-            state = move(state, {from: 'parking', to: 'hall', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
-            state = move(state, {from: 'parking', to: 'parkingBuffer', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {
+                from: 'parking',
+                to: 'hall',
+                predicate: passenger => passenger.dir === 'departure',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'parking',
+                to: 'parkingBuffer',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Parking',
@@ -212,10 +287,31 @@ export const constructions = {
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => buy(state, 'passport'),
         onTick:      (state, params = {}) => {
-            // some code
-            state = move(state, {from: 'passport', to: 'fastRoad', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
-            state = move(state, {from: 'passport', to: 'dutyFree', predicate: passenger => _.random(1, 3) === 1 && passenger.dir === 'departure', modifier: passenger => passenger});
-            state = move(state, {from: 'passport', to: 'bus', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
+            let passengers_count = 0;
+
+            state = move(state, {
+                from: 'passport',
+                to: 'fastRoad',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'passport',
+                to: 'dutyFree',
+                predicate: passenger => _.random(1, 3) === 1 && passenger.dir === 'departure',
+                modifier: passenger => {
+                    passengers_count++;
+                    return passenger;
+                }
+            });
+            state = move(state, {
+                from: 'passport',
+                to: 'bus',
+                predicate: passenger => passenger.dir === 'departure',
+                modifier: passenger => passenger
+            });
+
+            state.money += passengers_count * 10;
             return state;
         },
         name:        'Passport Control',
@@ -232,8 +328,18 @@ export const constructions = {
         onTick:      (state, params = {}) => {
             // generate dirty departure passengers, pick clean arrival passengers
             // move dirty departure passengers to hall
-            state = move(state, {from: 'rail', to: 'hall', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
-            state = move(state, {from: 'rail', to: 'railBuffer', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
+            state = move(state, {
+                from: 'rail',
+                to: 'hall',
+                predicate: passenger => passenger.dir === 'departure',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'rail',
+                to: 'railBuffer',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Rail',
@@ -249,8 +355,18 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'runway'),
         onTick:      (state, params = {}) => {
             // some code
-            state = move(state, {from: 'runway', to: 'bus', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
-            state = move(state, {from: 'runway', to: 'runwayBuffer', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
+            state = move(state, {
+                from: 'runway',
+                to: 'bus',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'runway',
+                to: 'runwayBuffer',
+                predicate: passenger => passenger.dir === 'departure',
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Runway',
@@ -266,8 +382,18 @@ export const constructions = {
         onClick:     (state, params = {}) => buy(state, 'security'),
         onTick:      (state, params = {}) => {
             // to baggage line
-            state = move(state, {from: 'security', to: 'luggageLine', predicate: passenger => passenger.dir === 'arrival', modifier: passenger => passenger});
-            state = move(state, {from: 'security', to: 'fastRoad', predicate: passenger => passenger.dir === 'departure', modifier: passenger => passenger});
+            state = move(state, {
+                from: 'security',
+                to: 'luggageLine',
+                predicate: passenger => passenger.dir === 'arrival',
+                modifier: passenger => passenger
+            });
+            state = move(state, {
+                from: 'security',
+                to: 'fastRoad',
+                predicate: passenger => passenger.dir === 'departure',
+                modifier: passenger => passenger
+            });
             return state;
         },
         name:        'Security',
