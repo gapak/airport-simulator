@@ -28,6 +28,27 @@ const default_state = {
         parkingBuffer: 1
     },
 
+    workersInConstruction: {
+        luggageCart: 0,
+        escalator: 0,
+        fastRoad: 0,
+        dutyFree: 0,
+        bus: 0,
+        passport: 0,
+        security: 0,
+        checkIn: 0,
+        hotel: 0,
+        luggageLine: 0,
+        hall: 0,
+        runway: 0,
+        cafe: 0,
+        rail: 0,
+        parking: 0,
+        runwayBuffer: 0,
+        railBuffer: 0,
+        parkingBuffer: 0
+    },
+
     queue: {
         luggageCart: [],
         escalator: [],
