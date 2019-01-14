@@ -5,7 +5,7 @@ import _ from 'lodash';
 const default_state = {
     money: 4200,
 
-    workers: 0,
+    workers: [],
 
     constructions: {
         luggageCart: 1,
