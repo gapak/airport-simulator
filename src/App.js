@@ -78,6 +78,14 @@ class App extends Component {
                         <div className="flex-container-row">
                             <div className="center">
                                 Queue: <div>{state.queue[item.key].length}</div>
+
+                                <div style={{fontSize: '18px'}} className="center">
+                                    Workers:
+                                    <button className="btn arrow-button" onClick={() => {}}> {'<'} </button>
+                                    <button className="btn arrow-button"> {0} </button>
+                                    <button className="btn arrow-button" onClick={() => {}}> {'>'}</button>
+                                </div>
+
                             </div>
                         </div>
                         <div className="flex-element">
