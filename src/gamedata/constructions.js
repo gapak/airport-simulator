@@ -55,6 +55,7 @@ export const constructions = {
         name:        'Bus',
         cost:        {money: 24000},
         bandwidth:   20,
+        workersBandwidth: 1,
         processing_time: 8,
         description: 'Transports people from airport to a plane.'
     },
@@ -76,6 +77,7 @@ export const constructions = {
         name:        'Check-in',
         cost:        {money: 16000},
         bandwidth:   12,
+        workersBandwidth: 1,
         processing_time: 6,
         description: 'Allow passengers to register on a flight offline.'
     },
@@ -96,6 +98,7 @@ export const constructions = {
         name:        'Duty Free',
         cost:        {money: 30000},
         bandwidth:   10,
+        workersBandwidth: 1,
         processing_time: 10,
         description: 'Passengers can buy some gifts here while their flight is late.'
     },
@@ -123,6 +126,7 @@ export const constructions = {
         name:        'Escalator',
         cost:        {money: 20000},
         bandwidth:   8,
+        workersBandwidth: 1,
         processing_time: 4,
         description: 'Transports people between floors.'
     },
@@ -150,6 +154,7 @@ export const constructions = {
         name:        'Fast Road',
         cost:        {money: 25000},
         bandwidth:   10,
+        workersBandwidth: 1,
         processing_time: 4,
         description: 'Allows people to move faster between gates.'
     },
@@ -195,6 +200,7 @@ export const constructions = {
         name:        'Hall',
         cost:        {money: 70000},
         bandwidth:   90,
+        workersBandwidth: 1,
         processing_time: 10,
         description: 'Common place for passengers to wait for their flight. Make sure it has enough benches.'
     },
@@ -215,6 +221,7 @@ export const constructions = {
         name:        'Hotel',
         cost:        {money: 30000},
         bandwidth:   80,
+        workersBandwidth: 1,
         processing_time: 240,
         description: 'Passengers can have some rest here during a long transfer'
     },
@@ -228,8 +235,9 @@ export const constructions = {
             return state;
         },
         name:        'Luggage Cart',
-        cost:        {money: 1000000},
+        cost:        {money: 0},
         bandwidth:   0,
+        workersBandwidth: 1,
         processing_time: 0,
         description: 'These cars drive luggage from the airport to a plane.'
     },
@@ -250,6 +258,7 @@ export const constructions = {
         name:        'Luggage Line',
         cost:        {money: 20000},
         bandwidth:   30,
+        workersBandwidth: 1,
         processing_time: 15,
         description: 'Passengers will take their luggage here'
     },
@@ -278,6 +287,7 @@ export const constructions = {
         name:        'Parking',
         cost:        {money: 20000},
         bandwidth:   20,
+        workersBandwidth: 1,
         processing_time: 10,
         description: 'People are coming here from a city.'
     },
@@ -317,6 +327,7 @@ export const constructions = {
         name:        'Passport Control',
         cost:        {money: 6000},
         bandwidth:   2,
+        workersBandwidth: 1,
         processing_time: 3,
         description: 'Checks that passengers have valid documents to cross over the country.'
     },
@@ -345,6 +356,7 @@ export const constructions = {
         name:        'Rail',
         cost:        {money: 30000},
         bandwidth:   50,
+        workersBandwidth: 1,
         processing_time: 16,
         description: 'This rail transports passengers from a city to the airport.'
     },
@@ -372,6 +384,7 @@ export const constructions = {
         name:        'Runway',
         cost:        {money: 42000},
         bandwidth:   128,
+        workersBandwidth: 1,
         processing_time: 20,
         description: 'The main airport construction. The more runways you have the more flights you can accept.'
     },
@@ -399,6 +412,7 @@ export const constructions = {
         name:        'Security',
         cost:        {money: 5000},
         bandwidth:   4,
+        workersBandwidth: 1,
         processing_time: 8,
         description: 'Provides security check of passengers and their carryon.'
     },
@@ -413,6 +427,7 @@ export const constructions = {
         cost:        {money: 100},
         name:        'runwayBuffer',
         bandwidth:   240,
+        workersBandwidth: 1,
         processing_time: 480,
         description: 'Portal'
     },
@@ -427,6 +442,7 @@ export const constructions = {
         cost:        {money: 100},
         name:        'railBuffer',
         bandwidth:   120,
+        workersBandwidth: 1,
         processing_time: 180,
         description: 'Portal'
     },
@@ -441,6 +457,7 @@ export const constructions = {
         cost:        {money: 100},
         name:        'parkingBuffer',
         bandwidth:   360,
+        workersBandwidth: 1,
         processing_time: 360,
         description: 'Portal'
     },
