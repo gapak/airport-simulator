@@ -3,6 +3,9 @@
     height: 22px;
     padding: 1px;
     margin: 1px;
+    color: black;
+    background-color: #c2effd;
+    opacity: 0.9;
 }
 
 .App {

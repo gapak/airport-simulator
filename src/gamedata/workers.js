@@ -14,9 +14,10 @@ const fire = (state, item_key) => {
     return state;
 };
 
-export const workers = {
+export const workersActions = {
     hire: {
         key:         'hire',
+        name: 'Hire',
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => hire(state, 'worker'),
         onTick:      (state, params = {}) => {
@@ -29,6 +30,7 @@ export const workers = {
 
     fire: {
         key:         'fire',
+        name: 'Fire',
         isDisabled:  (state, params = {}) => false,
         onClick:     (state, params = {}) => fire(state, 'worker'),
         onTick:      (state, params = {}) => {

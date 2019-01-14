@@ -18,7 +18,7 @@ import Helpers from "./game/Helpers";
 
 import {isEnough, chargeCost} from './bdcgin/Gin';
 import {constructions} from './gamedata/constructions';
-import {workers} from './gamedata/workers';
+import {workersActions} from './gamedata/workers';
 
 class App extends Component {
     constructor(props) {
@@ -62,27 +62,23 @@ class App extends Component {
             onClick: (state) => props.item.onClick(state)
         }} />;
 
-        const HireGinButton = (props) => <GinButton item={{
-            name: "Hire",
-            isDisabled: (state) => props.item.isDisabled(state),
-            onClick: (state) => props.item.onClick(state)
-        }} />;
-
-        const FireGinButton = (props) => <GinButton item={{
-            name: "Fire",
-            isDisabled: (state) => props.item.isDisabled(state),
-            onClick: (state) => props.item.onClick(state)
-        }} />;
-
+        const HireGinButton = (props) => <GinButton item={props.item} />;
 
         let constructionBox = (item, key) =>
-            <div key={item.key} className={item.key + " box smallBorders background"}>
+            <div key={item.key} className={"smallBorders background"}>
                 <div className="box">
-                    <div> { item.name }: <BuyGinButton item={item}/>
+                    <div className="flex-container-row">
+                        <div className="stretch air">
+                            { item.name }:
+                            <BuyGinButton item={item}/>
+                        </div>
                     </div>
+
                     <div className="flex-container-column">
-                        <div className="center fat highlight">
-                            Queue: <div>{state.queue[item.key].length}</div>
+                        <div className="flex-container-row">
+                            <div className="center">
+                                Queue: <div>{state.queue[item.key].length}</div>
+                            </div>
                         </div>
                         <div className="flex-element">
                             Load:
@@ -98,60 +94,39 @@ class App extends Component {
             <div className="App">
                 <div id="container">
                     <div className="flex-container-column">
-                        <div className="box">
-                            <div>
-                                Hour: {state.tick} Minutes: {state.frame}
-                            </div>
-                            <div> Game speed:
+                        <div className="">Hour: {state.tick} Minutes: {state.frame}
+                            <div className="">
+                                Game speed:
                                 <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
                             </div>
                         </div>
 
-                        {constructionBox(constructions.luggageCart)}
-                        {constructionBox(constructions.dutyFree)}
-                        {constructionBox(constructions.escalator)}
-                        {constructionBox(constructions.fastRoad)}
-                        {constructionBox(constructions.checkIn)}
-
-                        <div className="box"></div>
-                    </div>
-
-                    <div className="wide fat">
-                        <div className="box">
-                            {constructionBox(constructions.runway)}
-                        </div>
-                        <div className="splitOnTwoSides">
-                            {constructionBox(constructions.bus)}
-                        </div>
-                        <div className="splitOnTwoSides">
-                            {constructionBox(constructions.passport)}
-                        </div>
-                        <div className="splitOnTwoSides">
-                            {constructionBox(constructions.security)}
-                        </div>
-                        <div className="box">
-                            {constructionBox(constructions.hall)}
-                        </div>
-                        <div className="splitOnTwoSides">
-                            {constructionBox(constructions.rail)}
-                            {constructionBox(constructions.parking)}
+                        <div className="center smallBorders background">Workers: {state.workers}
+                            <div className="center">
+                                <div className="fat"><HireGinButton item={workersActions.hire}/></div>
+                                <div className="fat"><HireGinButton item={workersActions.fire}/></div>
+                            </div>
                         </div>
                     </div>
 
                     <div className="flex-container-column">
-                        <div className="box">
-                            <div>Money: ${state.money}</div>
-                            <div className="box smallBorders background">Workers: {state.workers.length}
-                                <div className="center">
-                                    <div className="fat"><HireGinButton item={workers.hire}/></div>
-                                    <div className="fat"><FireGinButton item={workers.fire}/></div>
-                                </div>
-                            </div>
-                        </div>
-                        {constructionBox(constructions.luggageLine)}
+                        <div className="">Money: ${state.money}</div>
+                        {constructionBox(constructions.bus)}
+                        {constructionBox(constructions.escalator)}
+                        {constructionBox(constructions.fastRoad)}
                         {constructionBox(constructions.hotel)}
+                        {constructionBox(constructions.rail)}
+                        {constructionBox(constructions.parking)}
+                    </div>
 
-                        <div className="box"></div>
+                    <div className="flex-container-column">
+                        <div>Something</div>
+                        {constructionBox(constructions.runway)}
+                        {constructionBox(constructions.dutyFree)}
+                        {constructionBox(constructions.passport)}
+                        {constructionBox(constructions.security)}
+                        {constructionBox(constructions.checkIn)}
+                        {constructionBox(constructions.hall)}
                     </div>
                 </div>
 
