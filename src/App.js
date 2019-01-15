@@ -109,7 +109,7 @@ class App extends Component {
                             </div>
                         </div>
 
-                        <div className="center smallBorders background">Workers: {state.workers.length}
+                        <div className="center smallBorders background">Workers: {state.workers}
                             <div className="center">
                                 <div className="fat"><HireGinButton item={workersActions.hire}/></div>
                                 <div className="fat"><HireGinButton item={workersActions.fire}/></div>

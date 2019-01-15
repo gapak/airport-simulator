@@ -2,14 +2,14 @@ import _ from 'lodash';
 
 const hire = (state, item_key) => {
     console.log('hire', item_key);
-    state.workers.length++;
+    state.workers++;
     return state;
 };
 
 const fire = (state, item_key) => {
     console.log('fire', item_key);
-    if (state.workers.length > 0) {
-        state.workers.length--;
+    if (state.workers > 0) {
+        state.workers--;
     }
     return state;
 };
