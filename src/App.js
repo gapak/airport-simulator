@@ -46,11 +46,12 @@ class App extends Component {
                 ? ''
                 :
                 <button
-                        className={
+                    className={
+                        classNames(props.className ? props.className : '',
                             (item.isDisabled && item.isDisabled(this.state)) ? 'disabled' :
-                                (item.cost ? isEnough(this.state, item.cost) ? '' : 'disabled' : '')
-                        }
-                        onClick={() => { this.gin.onClick(item); }}>
+                                (item.cost ? isEnough(this.state, item.cost) ? '' : 'disabled' : ''))
+                    }
+                    onClick={() => { this.gin.onClick(item); }}>
                     {item.name}
                 </button>
         };
@@ -81,11 +82,27 @@ class App extends Component {
 
                                 <div style={{fontSize: '18px'}} className="center">
                                     Workers:
-                                    <button className="btn arrow-button" onClick={() => {}}> {'<'} </button>
-                                    <button className="btn arrow-button"> {0} </button>
-                                    <button className="btn arrow-button" onClick={() => {}}> {'>'}</button>
-                                </div>
+                                    <GinButton className="btn arrow-button" item={{
+                                        name: '<',
+                                        isDisabled: state => state.workersInConstruction[item.key] < 1,
+                                        onClick: () => {
+                                            state.workersInConstruction[item.key] -= 1;
+                                            state.workers += 1;
+                                            return state;
+                                        }
+                                    }} />
 
+                                    <div className="arrow-button">{state.workersInConstruction[item.key]}</div>
+                                    <GinButton className="btn arrow-button" item={{
+                                        name: '>',
+                                        isDisabled: state => state.workers < 1,
+                                        onClick: state => {
+                                            state.workersInConstruction[item.key] += 1;
+                                            state.workers -= 1;
+                                            return state;
+                                        }
+                                    }} />
+                                </div>
                             </div>
                         </div>
                         <div className="flex-element">
