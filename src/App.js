@@ -18,6 +18,7 @@ import Helpers from "./game/Helpers";
 
 import {isEnough, chargeCost} from './bdcgin/Gin';
 import {constructions} from './gamedata/constructions';
+import {constructionBandwidthWithWorkers} from './gamedata/constructions';
 import {workersActions} from './gamedata/workers';
 
 class App extends Component {
@@ -108,7 +109,7 @@ class App extends Component {
                         <div className="flex-element">
                             Load:
                             {state.processing[item.key].length}/
-                            { item.bandwidth * state.constructions[item.key] } (
+                            { constructionBandwidthWithWorkers(state, item.key) } (
                             { item.bandwidth }×{ state.constructions[item.key] })
                         </div>
                     </div>

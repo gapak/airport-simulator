@@ -3,10 +3,34 @@ import _ from 'lodash';
 
 import { move } from "./passengers";
 
+
 const buy = (state, item_key) => {
     console.log('buy', item_key);
     state.constructions[item_key]++;
     return state;
+};
+
+export const constructionBandwidthWithWorkers = (state, item_key) => {
+    const defaultBandwidth = constructions[item_key].bandwidth * state.constructions[item_key];
+    const workersNumber = state.workersInConstruction[item_key];
+
+    if (workersNumber < 1) {
+        return 0;
+    }
+
+    if (workersNumber < state.constructions[item_key]) {
+        return constructions[item_key].bandwidth * workersNumber;
+    }
+
+    if (workersNumber === state.constructions[item_key]) {
+        return defaultBandwidth;
+    }
+
+    else {
+        let sqrt = Math.sqrt(workersNumber - state.constructions[item_key]);
+        let bonus = sqrt === 1 ? 0.5 : sqrt
+        return Math.floor(defaultBandwidth * bonus + defaultBandwidth);
+    }
 };
 
 /* Balance:
