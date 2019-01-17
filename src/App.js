@@ -76,36 +76,38 @@ class App extends Component {
                         </div>
                     </div>
 
-                    <div className="flex-container-column">
-                        <div className="flex-container-row">
-                            <div className="center">
-                                Queue: <div>{state.queue[item.key].length}</div>
-
-                                <div style={{fontSize: '18px'}} className="center">
-                                    Workers:
-                                    <GinButton className="btn arrow-button" item={{
-                                        name: '<',
-                                        isDisabled: state => state.workersInConstruction[item.key] < 1,
-                                        onClick: () => {
-                                            state.workersInConstruction[item.key] -= 1;
-                                            state.workers += 1;
-                                            return state;
-                                        }
-                                    }} />
-
-                                    <div className="arrow-button">{state.workersInConstruction[item.key]}</div>
-                                    <GinButton className="btn arrow-button" item={{
-                                        name: '>',
-                                        isDisabled: state => state.workers < 1,
-                                        onClick: state => {
-                                            state.workersInConstruction[item.key] += 1;
-                                            state.workers -= 1;
-                                            return state;
-                                        }
-                                    }} />
-                                </div>
-                            </div>
+                    <div className="flex-container-row">
+                        <div className="center">
+                            Queue:
+                            <div>{state.queue[item.key].length}</div>
                         </div>
+
+                        <div style={{fontSize: '18px'}} className="center">
+                            Workers:
+                            <GinButton className="btn arrow-button" item={{
+                                name: '<',
+                                isDisabled: state => state.workersInConstruction[item.key] < 1,
+                                onClick: () => {
+                                    state.workersInConstruction[item.key] -= 1;
+                                    state.workers += 1;
+                                    return state;
+                                }
+                            }} />
+
+                            <div className="arrow-button">{state.workersInConstruction[item.key]}</div>
+                            <GinButton className="btn arrow-button" item={{
+                                name: '>',
+                                isDisabled: state => state.workers < 1,
+                                onClick: state => {
+                                    state.workersInConstruction[item.key] += 1;
+                                    state.workers -= 1;
+                                    return state;
+                                }
+                            }} />
+                        </div>
+                    </div>
+
+                    <div className="flex-container-column">
                         <div className="flex-element">
                             Load:
                             {state.processing[item.key].length}/
