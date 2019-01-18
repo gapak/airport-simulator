@@ -125,13 +125,19 @@ class App extends Component {
             <div className="App">
                 <div id="container">
                     <div className="leftColumn">
-                        <div className="">Hour: {state.tick} Minutes: {state.frame}
-                            <div className="">
+                        <div className="">Money: ${state.money}</div>
+                        <div className="box smallBorders background">
+                            <span>
+                                Day {Math.floor(state.tick / (60*24))},
+                                {String("0" + (Math.floor(state.tick / 60)) % 24).slice(-2)}:
+                                {String("0" + state.tick % 60).slice(-2)}
+                            </span>
+
+                            <div>
                                 Game speed:
                                 <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
                             </div>
                         </div>
-                        <div className="">Money: ${state.money}</div>
                         <div className="center smallBorders background">Workers: {state.workers}
                             <div className="center">
                                 <div className="fat"><HireGinButton item={workersActions.hire}/></div>
