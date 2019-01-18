@@ -62,11 +62,3 @@ export const rules = {
     },
 };
 
-
-/**
- generate_passengers: { onTick: (store) => {
-        const runway = constructions.runway;
-        runway.passengers += _.random(100, runway.bandwidth);
-        return store;
-    }}
-*/

@@ -23,6 +23,7 @@ export const constructionBandwidthWithWorkers = (state, item_key) => {
     }
 
     if (workersNumber === state.constructions[item_key]) {
+        console.log(item_key, ' ', defaultBandwidth);
         return defaultBandwidth;
     }
 
@@ -348,7 +349,7 @@ export const constructions = {
             state.money += passengers_count * 10;
             return state;
         },
-        name:        'Passport Control',
+        name:        'Passport',
         cost:        {money: 6000},
         bandwidth:   2,
         workersBandwidth: 1,

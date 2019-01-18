@@ -128,33 +128,40 @@ class App extends Component {
                                 <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
                             </div>
                         </div>
+                    </div>
 
+                    <div className="flex-container-column">
+                        {constructionBox(constructions.runway)}
+                        <div className="constructionsRow">
+                            {constructionBox(constructions.bus)}
+                            {constructionBox(constructions.escalator)}
+                            {constructionBox(constructions.fastRoad)}
+                        </div>
+
+                        <div className="constructionsRow">
+                            {constructionBox(constructions.dutyFree)}
+                            {constructionBox(constructions.passport)}
+                            {constructionBox(constructions.security)}
+                            {constructionBox(constructions.checkIn)}
+                        </div>
+
+                        {constructionBox(constructions.hall)}
+
+                        <div className="constructionsRow">
+                            {constructionBox(constructions.rail)}
+                            {constructionBox(constructions.parking)}
+                            {constructionBox(constructions.hotel)}
+                        </div>
+                    </div>
+
+                    <div className="flex-container-column">
+                        <div className="">Money: ${state.money}</div>
                         <div className="center smallBorders background">Workers: {state.workers}
                             <div className="center">
                                 <div className="fat"><HireGinButton item={workersActions.hire}/></div>
                                 <div className="fat"><HireGinButton item={workersActions.fire}/></div>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="flex-container-column">
-                        <div className="">Money: ${state.money}</div>
-                        {constructionBox(constructions.bus)}
-                        {constructionBox(constructions.escalator)}
-                        {constructionBox(constructions.fastRoad)}
-                        {constructionBox(constructions.hotel)}
-                        {constructionBox(constructions.rail)}
-                        {constructionBox(constructions.parking)}
-                    </div>
-
-                    <div className="flex-container-column">
-                        <div>Something</div>
-                        {constructionBox(constructions.runway)}
-                        {constructionBox(constructions.dutyFree)}
-                        {constructionBox(constructions.passport)}
-                        {constructionBox(constructions.security)}
-                        {constructionBox(constructions.checkIn)}
-                        {constructionBox(constructions.hall)}
                     </div>
                 </div>
 
