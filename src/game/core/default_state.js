@@ -5,7 +5,7 @@ import _ from 'lodash';
 const default_state = {
     money: 4200,
 
-    workers: 7,
+    workers: 0,
 
     constructions: {
         luggageCart: 1,
@@ -30,16 +30,16 @@ const default_state = {
 
     workersInConstruction: {
         luggageCart: 0,
-        escalator: 0,
-        fastRoad: 0,
+        escalator: 1,
+        fastRoad: 1,
         dutyFree: 0,
-        bus: 0,
-        passport: 0,
-        security: 0,
-        checkIn: 0,
+        bus: 1,
+        passport: 1,
+        security: 1,
+        checkIn: 1,
         hotel: 0,
         luggageLine: 0,
-        hall: 0,
+        hall: 1,
         runway: 1,
         cafe: 0,
         rail: 1,
