@@ -50,13 +50,20 @@ export const rules = {
             return store;
         }
     },
+
+    salary: {
+        onTick: (state, params = {}) => {
+            if (state.tick % 240 === 0) {
+                let numberOfWorkers = 0;
+                _.each(state.workersInConstruction, number => {
+                    numberOfWorkers += number;
+                });
+                state.money -= numberOfWorkers * 10;
+                state.money -= state.workers * 10;
+                console.log('Salary! ', (numberOfWorkers + state.workers) * 10);
+            }
+            return state;
+        }
+    },
 };
 
-
-/**
- generate_passengers: { onTick: (store) => {
-        const runway = constructions.runway;
-        runway.passengers += _.random(100, runway.bandwidth);
-        return store;
-    }}
-*/

@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
-
 import { constructions } from "./constructions";
+import {constructionBandwidthWithWorkers} from './constructions';
 
 export const move = (state, params = {from: '', to: '', predicate: passenger => true, modifier: passenger => passenger}) => {
     params = _.assign({from: '', to: '', predicate: passenger => true, modifier: passenger => passenger}, params);
@@ -18,7 +18,7 @@ export const move = (state, params = {from: '', to: '', predicate: passenger => 
     }
 
     // number of the construction multiplied on the construction bandwidth
-    let totalBandwidth = constructions[params.from].bandwidth * state.constructions[params.from];
+    let totalBandwidth = constructionBandwidthWithWorkers(state, params.from);
     // passengers that now in the construction
     let numberOfProcessingPassengers = state.processing[params.from].length;
     // passengers that are waiting for getting into the to construction
