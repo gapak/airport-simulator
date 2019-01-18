@@ -10,16 +10,16 @@ export const vehicles = {
     aircraft: {
         key:         'aircraft',
         onTick:      (state, params = {}) => {
-            // generate dirty arrival and dirty transfer passengers, pick clean departure and clean transfer passengers
-            if (state.frame % 400 === 0) {
+            let passengers_count = 0;
+            if (state.frame % 200 === 0) {
                 let new_passengers = [];
                 _.times(_.random(17, 69 + Math.floor(state.tick / 100)), () => {
                     //new_passengers.push(gen_passenger(_.random(1, 2) === 1 ? 'arrival' : 'transfer'));
                     new_passengers.push(gen_passenger('arrival'));
                 });
+                
                 state.queue.runway = _.concat(state.queue.runway, new_passengers);
-
-                let passengers_count = 0;
+                passengers_count += new_passengers.length;
 
                 state = move(state, {
                     from: 'runwayBuffer',
@@ -33,6 +33,7 @@ export const vehicles = {
                 });
 
                 state.money += passengers_count * 10;
+                console.log("Money income! ", passengers_count * 10)
             }
             return state;
         },

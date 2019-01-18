@@ -53,7 +53,7 @@ export const rules = {
 
     salary: {
         onTick: (state, params = {}) => {
-            if (state.tick % 24 === 0) {
+            if (state.tick % 240 === 0) {
                 let numberOfWorkers = 0;
                 _.each(state.workersInConstruction, number => {
                     numberOfWorkers += number;
