@@ -30,8 +30,8 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    text-align: center;
-    height: 100%;
+    margin: 5px;
+    padding: 5px;
 }
 
 .center {
@@ -67,7 +67,6 @@ html, body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    text-align: center;
     margin: 3px;
     padding: 5px;
 }
@@ -87,6 +86,16 @@ html, body {
     font-size: 22px;
     color: darkred;
 }
+
+.leftColumn {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 3px;
+    padding: 5px;
+    width: 450px;
+}
+
 .moat {
     padding: 30px 100px;
     margin: 30px 100px;

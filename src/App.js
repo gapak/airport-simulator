@@ -66,7 +66,7 @@ class App extends Component {
 
         const HireGinButton = (props) => <GinButton item={props.item} />;
 
-        let constructionBox = (item, key) =>
+        const constructionBox = (item, key) =>
             <div key={item.key} className={"smallBorders background"}>
                 <div className="box">
                     <div className="flex-container-row">
@@ -78,8 +78,10 @@ class App extends Component {
 
                     <div className="flex-container-row">
                         <div className="center">
-                            Queue:
-                            <div>{state.queue[item.key].length}</div>
+                            <span className="air">
+                                Queue:
+                                {state.queue[item.key].length}
+                            </span>
                         </div>
 
                         <div style={{fontSize: '18px'}} className="center">
@@ -112,7 +114,7 @@ class App extends Component {
                             Load:
                             {state.processing[item.key].length}/
                             { constructionBandwidthWithWorkers(state, item.key) } (
-                            { item.bandwidth }×{ state.constructions[item.key] })
+                            Level: { state.constructions[item.key] })
                         </div>
                     </div>
                 </div>
@@ -121,17 +123,27 @@ class App extends Component {
         return (
             <div className="App">
                 <div id="container">
-                    <div className="flex-container-column">
+                    <div className="leftColumn">
                         <div className="">Hour: {state.tick} Minutes: {state.frame}
                             <div className="">
                                 Game speed:
                                 <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
                             </div>
                         </div>
+                        <div className="">Money: ${state.money}</div>
+                        <div className="center smallBorders background">Workers: {state.workers}
+                            <div className="center">
+                                <div className="fat"><HireGinButton item={workersActions.hire}/></div>
+                                <div className="fat"><HireGinButton item={workersActions.fire}/></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="flex-container-column">
-                        {constructionBox(constructions.runway)}
+                        <div className="wideBox">
+                            {constructionBox(constructions.runway)}
+                        </div>
+
                         <div className="constructionsRow">
                             {constructionBox(constructions.bus)}
                             {constructionBox(constructions.escalator)}
@@ -145,22 +157,14 @@ class App extends Component {
                             {constructionBox(constructions.checkIn)}
                         </div>
 
-                        {constructionBox(constructions.hall)}
+                        <div className="wideBox">
+                            {constructionBox(constructions.hall)}
+                        </div>
 
                         <div className="constructionsRow">
                             {constructionBox(constructions.rail)}
                             {constructionBox(constructions.parking)}
                             {constructionBox(constructions.hotel)}
-                        </div>
-                    </div>
-
-                    <div className="flex-container-column">
-                        <div className="">Money: ${state.money}</div>
-                        <div className="center smallBorders background">Workers: {state.workers}
-                            <div className="center">
-                                <div className="fat"><HireGinButton item={workersActions.hire}/></div>
-                                <div className="fat"><HireGinButton item={workersActions.fire}/></div>
-                            </div>
                         </div>
                     </div>
                 </div>
