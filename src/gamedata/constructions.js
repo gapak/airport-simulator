@@ -4,31 +4,31 @@ import _ from 'lodash';
 import { move } from "./passengers";
 
 
-const buy = (state, item_key) => {
-    console.log('buy', item_key);
-    state.constructions[item_key]++;
+const buy = (state, itemKey) => {
+    console.log('buy', itemKey);
+    state.constructions[itemKey]++;
     return state;
 };
 
-export const constructionBandwidthWithWorkers = (state, item_key) => {
-    const defaultBandwidth = constructions[item_key].bandwidth * state.constructions[item_key];
-    const workersNumber = state.workersInConstruction[item_key];
+export const constructionBandwidthWithWorkers = (state, itemKey) => {
+    const defaultBandwidth = constructions[itemKey].bandwidth * state.constructions[itemKey];
+    const workersNumber = state.workersInConstruction[itemKey];
 
     if (workersNumber < 1) {
         return 0;
     }
 
-    if (workersNumber < state.constructions[item_key]) {
-        return constructions[item_key].bandwidth * workersNumber;
+    if (workersNumber < state.constructions[itemKey]) {
+        return constructions[itemKey].bandwidth * workersNumber;
     }
 
-    if (workersNumber === state.constructions[item_key]) {
-        console.log(item_key, ' ', defaultBandwidth);
+    if (workersNumber === state.constructions[itemKey]) {
+        //console.log(itemKey, ' ', defaultBandwidth);
         return defaultBandwidth;
     }
 
     else {
-        let sqrt = Math.sqrt(workersNumber - state.constructions[item_key]);
+        let sqrt = Math.sqrt(workersNumber - state.constructions[itemKey]);
         let bonus = sqrt === 1 ? 0.5 : sqrt
         return Math.floor(defaultBandwidth * bonus + defaultBandwidth);
     }
@@ -51,7 +51,6 @@ export const constructionBandwidthWithWorkers = (state, item_key) => {
         cafe: 1
         rail: 1
         parking: 1
-
 
  */
 
@@ -81,7 +80,7 @@ export const constructions = {
         cost:        {money: 24000},
         bandwidth:   20,
         workersBandwidth: 1,
-        processing_time: 8,
+        processingTime: 8,
         description: 'Transports people from airport to a plane.'
     },
 
@@ -103,7 +102,7 @@ export const constructions = {
         cost:        {money: 16000},
         bandwidth:   12,
         workersBandwidth: 1,
-        processing_time: 6,
+        processingTime: 6,
         description: 'Allow passengers to register on a flight offline.'
     },
 
@@ -124,7 +123,7 @@ export const constructions = {
         cost:        {money: 30000},
         bandwidth:   10,
         workersBandwidth: 1,
-        processing_time: 10,
+        processingTime: 10,
         description: 'Passengers can buy some gifts here while their flight is late.'
     },
 
@@ -152,7 +151,7 @@ export const constructions = {
         cost:        {money: 20000},
         bandwidth:   8,
         workersBandwidth: 1,
-        processing_time: 4,
+        processingTime: 4,
         description: 'Transports people between floors.'
     },
 
@@ -180,7 +179,7 @@ export const constructions = {
         cost:        {money: 25000},
         bandwidth:   10,
         workersBandwidth: 1,
-        processing_time: 4,
+        processingTime: 4,
         description: 'Allows people to move faster between gates.'
     },
 
@@ -226,7 +225,7 @@ export const constructions = {
         cost:        {money: 70000},
         bandwidth:   90,
         workersBandwidth: 1,
-        processing_time: 10,
+        processingTime: 10,
         description: 'Common place for passengers to wait for their flight. Make sure it has enough benches.'
     },
 
@@ -247,7 +246,7 @@ export const constructions = {
         cost:        {money: 30000},
         bandwidth:   80,
         workersBandwidth: 1,
-        processing_time: 240,
+        processingTime: 240,
         description: 'Passengers can have some rest here during a long transfer'
     },
 
@@ -263,7 +262,7 @@ export const constructions = {
         cost:        {money: 0},
         bandwidth:   0,
         workersBandwidth: 1,
-        processing_time: 0,
+        processingTime: 0,
         description: 'These cars drive luggage from the airport to a plane.'
     },
 
@@ -284,7 +283,7 @@ export const constructions = {
         cost:        {money: 20000},
         bandwidth:   30,
         workersBandwidth: 1,
-        processing_time: 15,
+        processingTime: 15,
         description: 'Passengers will take their luggage here'
     },
 
@@ -313,7 +312,7 @@ export const constructions = {
         cost:        {money: 20000},
         bandwidth:   20,
         workersBandwidth: 1,
-        processing_time: 10,
+        processingTime: 10,
         description: 'People are coming here from a city.'
     },
 
@@ -353,7 +352,7 @@ export const constructions = {
         cost:        {money: 6000},
         bandwidth:   2,
         workersBandwidth: 1,
-        processing_time: 3,
+        processingTime: 3,
         description: 'Checks that passengers have valid documents to cross over the country.'
     },
 
@@ -382,7 +381,7 @@ export const constructions = {
         cost:        {money: 30000},
         bandwidth:   50,
         workersBandwidth: 1,
-        processing_time: 16,
+        processingTime: 16,
         description: 'This rail transports passengers from a city to the airport.'
     },
 
@@ -410,7 +409,7 @@ export const constructions = {
         cost:        {money: 42000},
         bandwidth:   128,
         workersBandwidth: 1,
-        processing_time: 20,
+        processingTime: 20,
         description: 'The main airport construction. The more runways you have the more flights you can accept.'
     },
 
@@ -438,7 +437,7 @@ export const constructions = {
         cost:        {money: 5000},
         bandwidth:   4,
         workersBandwidth: 1,
-        processing_time: 8,
+        processingTime: 8,
         description: 'Provides security check of passengers and their carryon.'
     },
 
@@ -453,7 +452,7 @@ export const constructions = {
         name:        'runwayBuffer',
         bandwidth:   240,
         workersBandwidth: 1,
-        processing_time: 480,
+        processingTime: 480,
         description: 'Portal'
     },
 
@@ -468,7 +467,7 @@ export const constructions = {
         name:        'railBuffer',
         bandwidth:   120,
         workersBandwidth: 1,
-        processing_time: 180,
+        processingTime: 180,
         description: 'Portal'
     },
 
@@ -483,12 +482,12 @@ export const constructions = {
         name:        'parkingBuffer',
         bandwidth:   360,
         workersBandwidth: 1,
-        processing_time: 360,
+        processingTime: 360,
         description: 'Portal'
     },
 
 };
 
 _.each(constructions, (construction, key) => {
-    console.log(construction.key, (10000 * construction.bandwidth / construction.processing_time / construction.cost.money));
+    console.log(construction.key, (10000 * construction.bandwidth / construction.processingTime / construction.cost.money));
 });

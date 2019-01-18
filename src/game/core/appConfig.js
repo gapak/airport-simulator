@@ -1,7 +1,7 @@
 
 export const game_name = 'airports_game';
 
-export const social_links = {
+export const socialLinks = {
     telegram: '',
     wiki: '',
     reddit: ''

@@ -8,8 +8,8 @@ import './css/conponents.css';
 import './css/tooltip.css';
 import './bdcgin/css/footer.css';
 
-import {game_name, social_links, support} from './game/core/app_config';
-import {getDefaultState} from './game/core/default_state';
+import {game_name, socialLinks, support} from './game/core/appConfig';
+import {getDefaultState} from './game/core/defaultState';
 import {rules} from './game/core/rules';
 import { Gin } from "./bdcgin/Gin";
 import GinGameMenu from './bdcgin/GinGameMenu';
@@ -120,6 +120,7 @@ class App extends Component {
                 </div>
             </div>;
 
+
         return (
             <div className="App">
                 <div id="container">
@@ -169,7 +170,7 @@ class App extends Component {
                     </div>
                 </div>
 
-                <GinFooter state={state} gin={this.gin} social_links={social_links} support={support}/>
+                <GinFooter state={state} gin={this.gin} socialLinks={socialLinks} support={support}/>
 
             </div>
         );

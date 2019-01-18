@@ -8,7 +8,7 @@ export const move = (state, params = {from: '', to: '', predicate: passenger => 
 
     let processedPassengers = _.remove(
         state.processing[params.from],
-        passenger => passenger.busy_till < state.tick && params.predicate(passenger)
+        passenger => passenger.busyTill < state.tick && params.predicate(passenger)
     );
 
     // If passengers are already processed
@@ -45,7 +45,7 @@ export const move = (state, params = {from: '', to: '', predicate: passenger => 
             // Every passenger gets a time-marker: till when they will be processing
             // from now + @processing_time of the construction
             _.each(passengersToProcessing, passenger => {
-                passenger.busy_till = state.tick + constructions[params.from].processing_time
+                passenger.busyTill = state.tick + constructions[params.from].processing_time
                 passenger = params.modifier(passenger);
             });
 
