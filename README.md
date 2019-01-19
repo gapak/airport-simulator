@@ -4,8 +4,9 @@ The game is in progress.
 
 To start playing do the following:
 
-npm install
-npm start
+```-npm install```
+
+```-npm start```
 
 For the current version are available:
 - passengers generation
