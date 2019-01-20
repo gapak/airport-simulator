@@ -96,13 +96,13 @@ const default_state = {
         taxi: [],
     },
 
-    gameSpeed: 1000,
-    frameRate: 1,
-    gameSpeedMultiplier: 1,
+    game_speed: 2000,
+    frame_rate: 1,
+    game_speed_multiplier: 1,
     frame: 0,
     tick: 0,
-    gamePaused: true,
-    gameEnd: false
+    game_paused: true,
+    game_end: false
 };
 
 
