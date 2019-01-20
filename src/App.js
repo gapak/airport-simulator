@@ -8,8 +8,8 @@ import './css/conponents.css';
 import './css/tooltip.css';
 import './bdcgin/css/footer.css';
 
-import {game_name, social_links, support} from './game/core/app_config';
-import {getDefaultState} from './game/core/default_state';
+import {game_name, socialLinks, support} from './game/core/appConfig';
+import {getDefaultState} from './game/core/defaultState';
 import {rules} from './game/core/rules';
 import { Gin } from "./bdcgin/Gin";
 import GinGameMenu from './bdcgin/GinGameMenu';
@@ -120,17 +120,24 @@ class App extends Component {
                 </div>
             </div>;
 
+
         return (
             <div className="App">
                 <div id="container">
                     <div className="leftColumn">
-                        <div className="">Hour: {state.tick} Minutes: {state.frame}
-                            <div className="">
+                        <div className="">Money: ${state.money}</div>
+                        <div className="box smallBorders background">
+                            <span>
+                                Day {Math.floor(state.tick / (60*24))},
+                                {String("0" + (Math.floor(state.tick / 60)) % 24).slice(-2)}:
+                                {String("0" + state.tick % 60).slice(-2)}
+                            </span>
+
+                            <div>
                                 Game speed:
                                 <GinGameMenu state={state} gin={this.gin} speeds={[1, 3, 24]} />
                             </div>
                         </div>
-                        <div className="">Money: ${state.money}</div>
                         <div className="center smallBorders background">Workers: {state.workers}
                             <div className="center">
                                 <div className="fat"><HireGinButton item={workersActions.hire}/></div>
@@ -169,7 +176,7 @@ class App extends Component {
                     </div>
                 </div>
 
-                <GinFooter state={state} gin={this.gin} social_links={social_links} support={support}/>
+                <GinFooter state={state} gin={this.gin} socialLinks={socialLinks} support={support}/>
 
             </div>
         );

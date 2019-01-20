@@ -29,7 +29,6 @@ html, body {
 .box {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     margin: 5px;
     padding: 5px;
 }

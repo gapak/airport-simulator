@@ -17,7 +17,7 @@ export const vehicles = {
                     //new_passengers.push(gen_passenger(_.random(1, 2) === 1 ? 'arrival' : 'transfer'));
                     new_passengers.push(gen_passenger('arrival'));
                 });
-                
+
                 state.queue.runway = _.concat(state.queue.runway, new_passengers);
                 passengers_count += new_passengers.length;
 

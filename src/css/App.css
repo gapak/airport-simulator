@@ -12,7 +12,11 @@
 .App {
     display: flex;
     flex-direction: column;
-    background: url('/background.jpg') no-repeat center top #0b0b1b;
+    background: url('/background.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     height: 100%;
 }
 

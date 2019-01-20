@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 const default_state = {
     money: 4200,
-
     workers: 0,
 
     constructions: {
@@ -91,19 +90,19 @@ const default_state = {
         parkingBuffer: []
     },
 
-    vehicles_passengers: {
+    vehiclesPassengers: {
         aircraft: [],
         train: [],
         taxi: [],
     },
 
-    game_speed: 1000,
-    frame_rate: 1,
-    game_speed_multiplier: 1,
+    gameSpeed: 1000,
+    frameRate: 1,
+    gameSpeedMultiplier: 1,
     frame: 0,
     tick: 0,
-    game_paused: true,
-    game_end: false
+    gamePaused: true,
+    gameEnd: false
 };
 
 
