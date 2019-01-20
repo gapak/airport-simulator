@@ -30,7 +30,6 @@ html, body {
     display: flex;
     flex-direction: column;
     margin: 5px;
-    padding: 5px;
 }
 
 .center {
@@ -66,8 +65,7 @@ html, body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin: 3px;
-    padding: 5px;
+    margin: 5px;
 }
 
 .flex-container-row {
@@ -90,8 +88,7 @@ html, body {
     display: flex;
     flex-direction: column;
     text-align: center;
-    margin: 3px;
-    padding: 5px;
+    margin: 5px;
     width: 450px;
 }
 
